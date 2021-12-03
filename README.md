@@ -5,4 +5,4 @@ This is also an outdated version (v1.0.1) as I am working on the newest version 
 
 As such, please do not download any of these as this may be buggy. 
 
-For the version that was just released - go to https://www.curseforge.com/minecraft/mc-mods/the-avocados-mod
+For the version that was just released - go [here](https://www.curseforge.com/minecraft/mc-mods/the-avocados-mod).
