@@ -21,7 +21,7 @@
     "main": [
       "potato.avocados.Avocados"
     ],
-    "dyecolorextension":[
+    "mm:early_risers":[
       "potato.avocados.DyeColorExtender"
     ]
   },
