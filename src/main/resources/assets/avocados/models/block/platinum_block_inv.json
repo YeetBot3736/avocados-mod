@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button_inventory",
+  "textures": {
+	"texture": "avocados:block/platinum_block"
+  }
+}

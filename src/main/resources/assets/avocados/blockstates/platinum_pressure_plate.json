@@ -1,0 +1,10 @@
+{
+  "variants": {
+	"powered=false": {
+	  "model": "avocados:block/platinum_pressure_plate"
+	},
+	"powered=true": {
+	  "model": "avocados:block/platinum_pressure_plate_down"
+	}
+  }
+}

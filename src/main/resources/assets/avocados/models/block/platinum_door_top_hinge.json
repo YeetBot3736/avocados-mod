@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_rh",
+  "textures": {
+	"top": "avocados:block/platinum_door_top",
+	"bottom": "avocados:block/platinum_door_bottom"
+  }
+}

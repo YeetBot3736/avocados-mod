@@ -1,0 +1,7 @@
+{
+    "parent":"minecraft:item/generated",
+    "textures":
+        {
+            "layer0":"avocados:item/platinum_potato"
+        }
+}

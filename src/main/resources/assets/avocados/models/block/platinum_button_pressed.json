@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button_pressed",
+  "textures": {
+	"texture": "avocados:block/platinum_block"
+  }
+}
