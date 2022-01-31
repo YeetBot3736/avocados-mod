@@ -1,0 +1,43 @@
+{
+    "__comment": "Made with TheDestruc7i0n's advancements generator: https://advancements.thedestruc7i0n.ca",
+    "display": {
+        "title": {
+            "text": "Seriously - what are you doing in your life?",
+            "color": "dark_blue",
+            "bold": false,
+            "italic": false,
+            "underlined": false,
+            "strikethrough": false
+        },
+        "description": {
+            "text": "Get a netherite hoe from platinum hoe!",
+            "color": "white",
+            "bold": false,
+            "underlined": false
+        },
+        "icon": {
+            "item": "minecraft:netherite_hoe"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": true,
+        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    },
+    "criteria": {
+        "d": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_hoe_netherite"
+            }
+        }
+    },
+    "requirements": [
+        [
+            "d"
+        ]
+    ],
+    "rewards": {
+        "experience": 2
+    }
+}

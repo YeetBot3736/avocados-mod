@@ -1,0 +1,115 @@
+{
+    "__comment": "Made with TheDestruc7i0n's advancements generator: https://advancements.thedestruc7i0n.ca",
+    "display": {
+        "title": {
+            "text": "Cheapskate",
+            "color": "dark_blue",
+            "bold": false,
+            "italic": false,
+            "underlined": false,
+            "strikethrough": false
+        },
+        "description": {
+            "text": "Get full netherite tools and armor just from its platinum counterparts!",
+            "color": "white",
+            "bold": false,
+            "underlined": false
+        },
+        "icon": {
+            "item": "minecraft:netherite_ingot"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false,
+        "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+    },
+    "criteria": {
+        "a": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_shovel_netherite"
+            }
+        },
+        "b": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_pickaxe_netherite"
+            }
+        },
+        "c": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_axe_netherite"
+            }
+        },
+        "d": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_hoe_netherite"
+            }
+        },
+        "e": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_sword_netherite"
+            }
+        },
+        "f": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_helmet_netherite"
+            }
+        },
+        "g": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_leggings_netherite"
+            }
+        },
+        "h": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_boots_netherite"
+            }
+        },
+        "i": {
+            "trigger": "minecraft:recipe_unlocked",
+            "conditions": {
+                "recipe": "avocados:platinum_chestplate_netherite"
+            }
+        }
+    },
+    "requirements": [
+        [
+            "a"
+        ],
+        [
+            "b"
+        ],
+        [
+            "c"
+        ],
+        [
+            "d"
+        ],
+        [
+            "e"
+        ],
+        [
+            "f"
+        ],
+        [
+            "g"
+        ],
+        [
+            "i"
+        ],
+        [
+            "h"
+        ]
+    ],
+    "rewards": {
+        "experience": 2
+    }
+}
