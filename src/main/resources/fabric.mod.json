@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "avocados",
+  "version": "${version}",
+
+  "name": "Avocados",
+  "description": "Adds custom items to Minecraft!",
+  "authors": [
+    "Potato3218"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "CC BY-NC-SA 4.0",
+  "icon": "assets/avocados/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "potato.avocados.Avocados"
+    ],
+    "dyecolorextension":[
+      "potato.avocados.DyeColorExtender"
+    ]
+  },
+  "mixins": [
+    "avocados.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
