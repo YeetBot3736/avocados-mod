@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#A#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "avocados:platinum_nugget"
+        },
+        "A": {
+            "item": "avocados:cooked_beetroot"
+        }
+    },
+    "result": {
+        "item": "avocados:platinum_beetroot",
+        "count": 1
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": {
+        "item": "avocados:platinum_sword"
+    },
+    "result": "avocados:platinum_nugget",
+    "experience": 0.1,
+    "cookingtime": 100
+}

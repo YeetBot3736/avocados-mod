@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+	"item": "avocado:nether_platinum_ore"
+  },
+  "result": "avocados:platinum_ingot",
+  "experience": 0.25,
+  "cookingtime": 200
+}

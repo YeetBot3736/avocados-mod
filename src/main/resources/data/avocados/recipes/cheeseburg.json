@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "P",
+        "Q"
+    ],
+    "key": {
+        "#": {
+            "item": "avocados:cheese"
+        },
+        "P": {
+            "item": "minecraft:bread"
+        },
+        "Q": {
+            "item": "minecraft:cooked_beef"
+        }
+    },
+    "result": {
+        "item": "avocados:beesechurger",
+        "count": 2
+    }
+}

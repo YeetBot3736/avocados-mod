@@ -1,0 +1,15 @@
+{
+    "type":"minecraft:crafting_shapeless",
+    "ingredients":[
+        {
+            "item":"avocados:cheese"
+        },
+        {
+            "item":"minecraft:cake"
+        }
+    ],
+    "result":{
+        "item":"avocados:cheesecake",
+        "count":8
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "type":"minecraft:crafting_shapeless",
+    "ingredients":[
+        {
+            "item":"avocados:platinum_ingot"
+        }
+    ],
+    "result":{
+        "item":"avocados:platinum_nugget",
+        "count":9
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": {
+        "item": "avocados:raw_platinum_block"
+    },
+    "result": "avocados:platinum_block",
+    "experience": 0.35,
+    "cookingtime": 350
+}

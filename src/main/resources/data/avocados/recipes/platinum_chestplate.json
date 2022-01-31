@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "a a",
+        "aaa",
+        "aaa"
+    ],
+    "key": {
+        "a": {
+            "item": "avocados:platinum_ingot"
+        }
+    },
+    "result": {
+        "item": "avocados:platinum_chestplate",
+        "count": 1
+    }
+}

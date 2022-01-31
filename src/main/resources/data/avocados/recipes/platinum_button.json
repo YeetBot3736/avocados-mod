@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+	"item": "minecraft:stone_button"
+  },
+  "addition": {
+	"item": "avocados:platinum_nugget"
+  },
+  "result": {
+	"item": "avocados:platinum_button"
+  }
+}

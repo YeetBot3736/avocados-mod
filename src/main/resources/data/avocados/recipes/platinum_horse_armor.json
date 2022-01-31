@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+	"item": "minecraft:iron_horse_armor"
+  },
+  "addition": {
+	"item": "avocados:platinum_ingot"
+  },
+  "result": {
+	"item": "avocados:platinum_horse_armor"
+  }
+}
