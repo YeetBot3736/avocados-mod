@@ -1,0 +1,6 @@
+{
+  "parent":"minecraft:block/cube_all",
+  "textures":{
+	"all":"avocados:block/fuchsia_concrete_powder"
+  }
+}

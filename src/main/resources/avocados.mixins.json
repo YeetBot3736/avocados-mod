@@ -4,13 +4,15 @@
   "package": "potato.avocados.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MapColorMixin",
-    "SheepEntityMixin"
+	"MapColorMixin",
+	"RendererMixin",
+	"SheepEntityMixin",
+	"ShulkerBoxMixin"
   ],
   "client": [
   ],
   "server": [],
   "injectors": {
-    "defaultRequire": 1
+	"defaultRequire": 1
   }
 }

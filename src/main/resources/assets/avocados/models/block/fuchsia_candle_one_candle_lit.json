@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_candle",
+  "textures": {
+	"all": "avocados:block/fuchsia_candle_lit",
+	"particle": "avocados:block/fuchsia_candle_lit"
+  }
+}

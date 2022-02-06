@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+	"###",
+	"###",
+	" / "
+  ],
+  "key": {
+	"#": {
+	  "item": "avocados:teal_wool"
+	},
+	"/": {
+	  "item": "minecraft:stick"
+	}
+  },
+  "result": {
+	"item": "avocados:teal_banner",
+	"count": 1
+  }
+}

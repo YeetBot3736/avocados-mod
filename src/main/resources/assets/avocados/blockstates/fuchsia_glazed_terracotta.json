@@ -1,0 +1,19 @@
+{
+  "variants": {
+	"facing=east": {
+	  "model": "avocados:block/fuchsia_glazed_terracotta",
+	  "y": 270
+	},
+	"facing=north": {
+	  "model": "avocados:block/fuchsia_glazed_terracotta",
+	  "y": 180
+	},
+	"facing=south": {
+	  "model": "avocados:block/fuchsia_glazed_terracotta"
+	},
+	"facing=west": {
+	  "model": "avocados:block/fuchsia_glazed_terracotta",
+	  "y": 90
+	}
+  }
+}

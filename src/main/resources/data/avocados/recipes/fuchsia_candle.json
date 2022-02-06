@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "dyed_candle",
+  "ingredients": [
+	{
+	  "item": "minecraft:candle"
+	},
+	{
+	  "item": "avocados:fuchsia_dye"
+	}
+  ],
+  "result": {
+	"item": "avocados:fuchsia_candle"
+  }
+}

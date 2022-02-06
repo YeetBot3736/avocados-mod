@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "wool",
+  "ingredients": [
+	{
+	  "item": "avocados:fuchsia_dye"
+	},
+	{
+	  "item": "minecraft:white_wool"
+	}
+  ],
+  "result": {
+	"item": "avocados:fuchsia_wool"
+  }
+}

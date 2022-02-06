@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "concrete_powder",
+  "ingredients": [
+	{
+	  "item": "avocados:teal_dye"
+	},
+	{
+	  "item": "minecraft:sand"
+	},
+	{
+	  "item": "minecraft:sand"
+	},
+	{
+	  "item": "minecraft:sand"
+	},
+	{
+	  "item": "minecraft:sand"
+	},
+	{
+	  "item": "minecraft:gravel"
+	},
+	{
+	  "item": "minecraft:gravel"
+	},
+	{
+	  "item": "minecraft:gravel"
+	},
+	{
+	  "item": "minecraft:gravel"
+	}
+  ],
+  "result": {
+	"item": "avocados:teal_concrete_powder",
+	"count": 8
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+	"lit=false": {
+	  "model": "avocados:block/teal_candle_cake"
+	},
+	"lit=true": {
+	  "model": "avocados:block/teal_candle_cake_lit"
+	}
+  }
+}

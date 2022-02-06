@@ -22,7 +22,7 @@
       "potato.avocados.Avocados"
     ],
     "mm:early_risers":[
-      "potato.avocados.DyeColorExtender"
+      "potato.avocados.dye.DyeColorExtender"
     ]
   },
   "mixins": [
