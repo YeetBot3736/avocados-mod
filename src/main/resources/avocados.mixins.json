@@ -6,6 +6,7 @@
   "mixins": [
 	"MapColorMixin",
 	"RendererMixin",
+	"SheepDropMixin",
 	"SheepEntityMixin",
 	"ShulkerBoxMixin"
   ],
