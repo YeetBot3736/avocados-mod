@@ -27,6 +27,22 @@ public abstract class SheepColorMixin extends Entity {
         cir.setReturnValue(DyeColor.byId(dataTracker.get(COLOR) & 31));
     }
 
+    @Inject(method = "setSheared", at = @At("HEAD"), cancellable = true)
+    public void setSheared(boolean sheared, CallbackInfo ci){
+        byte b = this.dataTracker.get(COLOR);
+        if (sheared) {
+            this.dataTracker.set(COLOR, (byte)(b | 32));
+        } else {
+            this.dataTracker.set(COLOR, (byte)(b & 0xFFFFFFDF));
+        }
+        ci.cancel();
+    }
+
+    @Inject(method = "isSheared", cancellable = true, at = @At("HEAD"))
+    public void isSheared(CallbackInfoReturnable<Boolean> cir){
+        cir.setReturnValue((dataTracker.get(COLOR) & 32) != 0);
+    }
+
     @Inject(method = "setColor", at=@At("HEAD"), cancellable = true)
     public void setColor(DyeColor color, CallbackInfo ci){
         byte avocados = this.dataTracker.get(COLOR);

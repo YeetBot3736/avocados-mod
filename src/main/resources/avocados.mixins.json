@@ -8,8 +8,7 @@
 	"RendererMixin",
 	"SheepColorMixin",
 	"SheepDropMixin",
-	"SheepEntityMixin",
-	"ShulkerBoxMixin"
+	"SheepEntityMixin"
   ],
   "client": [
   ],
