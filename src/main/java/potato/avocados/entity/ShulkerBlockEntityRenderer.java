@@ -1,6 +1,3 @@
-/*
- * Decompiled with CFR 0.0.9 (FabricMC cc05e23f).
- */
 package potato.avocados.entity;
 
 import net.minecraft.block.AbstractBlock;
@@ -27,7 +24,7 @@ public class ShulkerBlockEntityRenderer
     private final ShulkerEntityModel<?> model;
 
     public ShulkerBlockEntityRenderer(BlockEntityRendererFactory.Context ctx) {
-        this.model = new ShulkerEntityModel(ctx.getLayerModelPart(Avocados.SH));
+        this.model = new ShulkerEntityModel<>(ctx.getLayerModelPart(Avocados.SH));
     }
 
     @Override
@@ -41,7 +38,6 @@ public class ShulkerBlockEntityRenderer
         blockState = (dyeColor = ShulkerBlockEntity.getColor()) == null ? TexturedRenderLayers.SHULKER_TEXTURE_ID : TexturedRenderLayers.COLORED_SHULKER_BOXES_TEXTURES.get(dyeColor.getId());
         matrixStack.push();
         matrixStack.translate(0.5, 0.5, 0.5);
-        float g = 0.9995f;
         matrixStack.scale(0.9995f, 0.9995f, 0.9995f);
         matrixStack.multiply(direction.getRotationQuaternion());
         matrixStack.scale(1.0f, -1.0f, -1.0f);

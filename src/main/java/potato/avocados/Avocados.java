@@ -82,7 +82,7 @@ public class Avocados implements ModInitializer{
 	public static final Block TEAL_CARPET = new CarpetBlock(FabricBlockSettings.of(Material.CARPET).strength(1.0f,1.0f).sounds(BlockSoundGroup.WOOL));
 	public static final Block TEAL_STAINED_GLASS = new StainedGlassBlock(TEAL_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f,3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
 	public static final Block TEAL_STAINED_GLASS_PANE = new StainedGlassPaneBlock(TEAL_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f,3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
-	public static final Block TEAL_SHULKER_BOX = createShulkerBoxBlock(TEAL_COLOR, FabricBlockSettings.of(Material.SHULKER_BOX).strength(20.0f,20.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block TEAL_SHULKER_BOX = new ShulkerBlock(TEAL_COLOR, FabricBlockSettings.of(Material.SHULKER_BOX).strength(20.0f,20.0f).sounds(BlockSoundGroup.STONE));
 	public static final Block TEAL_CONCRETE = new Block(FabricBlockSettings.of(Material.STONE).strength(18.0f,18.0f).sounds(BlockSoundGroup.STONE));
 	public static final Block TEAL_CONCRETE_POWDER = new ConcretePowderBlock(TEAL_CONCRETE, FabricBlockSettings.of(Material.SOIL).strength(5.0f,5.0f).sounds(BlockSoundGroup.SAND));
 	public static final Block TEAL_BED = new BedBlock(TEAL_COLOR, FabricBlockSettings.of(Material.WOOD).strength(20.0f,20.0f).sounds(BlockSoundGroup.WOOD));
@@ -97,7 +97,7 @@ public class Avocados implements ModInitializer{
 	public static final Block FUCHSIA_CARPET = new CarpetBlock(FabricBlockSettings.of(Material.CARPET).strength(1.0f,1.0f).sounds(BlockSoundGroup.WOOL));
 	public static final Block FUCHSIA_STAINED_GLASS = new StainedGlassBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f,3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
 	public static final Block FUCHSIA_STAINED_GLASS_PANE = new StainedGlassPaneBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f,3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
-	public static final Block FUCHSIA_SHULKER_BOX = createShulkerBoxBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.SHULKER_BOX).strength(20.0f,20.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block FUCHSIA_SHULKER_BOX = new ShulkerBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.SHULKER_BOX).strength(20.0f,20.0f).sounds(BlockSoundGroup.STONE));
 	public static final Block FUCHSIA_CONCRETE = new Block(FabricBlockSettings.of(Material.STONE).strength(18.0f,18.0f).sounds(BlockSoundGroup.STONE));
 	public static final Block FUCHSIA_CONCRETE_POWDER = new ConcretePowderBlock(FUCHSIA_CONCRETE, FabricBlockSettings.of(Material.SOIL).strength(5.0f,5.0f).sounds(BlockSoundGroup.SAND));
 	public static final Block FUCHSIA_BED = new BedBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(20.0f,20.0f).sounds(BlockSoundGroup.WOOD));
@@ -110,16 +110,6 @@ public class Avocados implements ModInitializer{
 	public static BlockEntityType<ShulkerBlockEntity> SHULKER_E;
 	public static BlockEntityType<BedBlockEntity> TEAL_BED_E, FUCHSIA_BED_E;
 	public static BlockEntityType<BannerBlockEntity> TEAL_BANNER_E, FUCHSIA_BANNER_E;
-	public static ShulkerBlock createShulkerBoxBlock(DyeColor color, AbstractBlock.Settings settings) {
-		AbstractBlock.ContextPredicate contextPredicate = (state, world, pos) -> {
-			BlockEntity blockEntity = world.getBlockEntity(pos);
-			if (!(blockEntity instanceof ShulkerBlockEntity shulkerBlockEntity)) {
-				return true;
-			}
-			return shulkerBlockEntity.suffocates();
-		};
-		return new ShulkerBlock(color, settings.strength(2.0f).dynamicBounds().nonOpaque().suffocates(contextPredicate).blockVision(contextPredicate));
-	}
 
 	public void regItem(String ItemName, Item item){
 		Registry.register(Registry.ITEM, new Identifier("avocados", ItemName), item);
@@ -129,7 +119,7 @@ public class Avocados implements ModInitializer{
 		if(block instanceof BannerBlock){
 			Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BlockItem(block, new Item.Settings().group(group).maxCount(16)));
 		}
-		else if(block instanceof ShulkerBoxBlock || block instanceof BedBlock){
+		else if(block instanceof ShulkerBlock || block instanceof BedBlock){
 			Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BlockItem(block, new Item.Settings().group(group).maxCount(1)));
 		}
 		else Registry.register(Registry.ITEM, new Identifier("avocados",BlockName),new BlockItem(block, new Item.Settings().group(group)));
@@ -155,9 +145,7 @@ public class Avocados implements ModInitializer{
 		MOD_DROP.put(TEAL_COLOR, TEAL_WOOL);
 		MOD_DROP.put(FUCHSIA_COLOR, FUCHSIA_WOOL);
 		SheepDropMixin.setDrops(MOD_DROP);
-		SHULKER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE,new Identifier("avocados","shulker_box"), FabricBlockEntityTypeBuilder.create(ShulkerBlockEntity::new).build());
-		//TEAL_SHULKER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE,new Identifier("avocados","teal_shulker_box"), FabricBlockEntityTypeBuilder.create(ShulkerBlockEntity::new).build());
-//		FUCHSIA_SHULKER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("avocados","fuchsia_shulker_box"), FabricBlockEntityTypeBuilder.create(ShulkerBlockEntity::new).build());
+		SHULKER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE,new Identifier("avocados","shulker_box"), FabricBlockEntityTypeBuilder.create(ShulkerBlockEntity::new, TEAL_SHULKER_BOX, FUCHSIA_SHULKER_BOX).build());
 		TEAL_BED_E = Registry.register(Registry.BLOCK_ENTITY_TYPE,new Identifier("avocados","teal_bed"), FabricBlockEntityTypeBuilder.create(BedBlockEntity::new).build());
 		FUCHSIA_BED_E = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("avocados","fuchsia_bed"), FabricBlockEntityTypeBuilder.create(BedBlockEntity::new).build());
 		TEAL_BANNER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE,new Identifier("avocados","teal_banner"), FabricBlockEntityTypeBuilder.create(BannerBlockEntity::new).build());

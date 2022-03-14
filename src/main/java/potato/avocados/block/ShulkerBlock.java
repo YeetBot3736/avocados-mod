@@ -1,14 +1,8 @@
 package potato.avocados.block;
 
 import java.util.List;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FacingBlock;
-import net.minecraft.block.ShapeContext;
+
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -56,15 +50,14 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class ShulkerBlock
-        extends BlockWithEntity {
+public class ShulkerBlock extends ShulkerBoxBlock implements BlockEntityProvider {
     public static final EnumProperty<Direction> FACING = FacingBlock.FACING;
     public static final Identifier CONTENTS = new Identifier("contents");
     @Nullable
     private final DyeColor color;
 
     public ShulkerBlock(@Nullable DyeColor color, AbstractBlock.Settings settings) {
-        super(settings);
+        super(color, settings);
         this.color = color;
         this.setDefaultState(this.stateManager.getDefaultState().with(FACING, Direction.UP));
     }
@@ -232,7 +225,7 @@ public class ShulkerBlock
     @Override
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
         ItemStack itemStack = super.getPickStack(world, pos, state);
-        world.getBlockEntity(pos, BlockEntityType.SHULKER_BOX).ifPresent(blockEntity -> blockEntity.setStackNbt(itemStack));
+        world.getBlockEntity(pos, Avocados.SHULKER_E).ifPresent(blockEntity -> blockEntity.setStackNbt(itemStack));
         return itemStack;
     }
 

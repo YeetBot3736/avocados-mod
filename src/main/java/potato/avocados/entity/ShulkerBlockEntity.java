@@ -5,6 +5,8 @@ package potato.avocados.entity;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityTicker;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
@@ -16,6 +18,9 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.sound.SoundCategory;
@@ -181,6 +186,15 @@ public class ShulkerBlockEntity extends LootableContainerBlockEntity implements 
         if (!this.serializeLootTable(nbt)) {
             Inventories.writeNbt(nbt, this.inventory, false);
         }
+    }
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
+    @Override
+    public NbtCompound toInitialChunkDataNbt() {
+        return createNbt();
     }
 
     public void readInventoryNbt(NbtCompound nbt) {
