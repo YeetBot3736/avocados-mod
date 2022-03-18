@@ -1,11 +1,8 @@
-package potato.avocados.entity;
+package potato.avocados.entity.shulker;
 
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.TexturedRenderLayers;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.entity.model.ShulkerEntityModel;
@@ -14,7 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.state.State;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.Direction;
-import potato.avocados.Avocados;
+import potato.avocados.*;
 import potato.avocados.block.ShulkerBlock;
 
 import java.util.Objects;

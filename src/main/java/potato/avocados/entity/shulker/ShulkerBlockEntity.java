@@ -1,12 +1,7 @@
-/*
- * Decompiled with CFR 0.0.9 (FabricMC cc05e23f).
- */
-package potato.avocados.entity;
+package potato.avocados.entity.shulker;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityTicker;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.Entity;
@@ -33,7 +28,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
-import potato.avocados.Avocados;
+import potato.avocados.*;
 import potato.avocados.block.ShulkerBlock;
 
 import java.util.List;

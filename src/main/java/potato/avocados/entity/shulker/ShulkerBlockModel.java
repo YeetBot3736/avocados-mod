@@ -1,4 +1,4 @@
-package potato.avocados.entity;
+package potato.avocados.entity.shulker;
 
 import com.google.common.collect.ImmutableList;
 import net.fabricmc.api.EnvType;
@@ -14,7 +14,6 @@ import net.minecraft.client.render.entity.model.CompositeEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelPartNames;
 import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.util.math.MathHelper;
-import potato.avocados.entity.ShulkerBlockEntity;
 
 @Environment(value=EnvType.CLIENT)
 public class ShulkerBlockModel<T extends ShulkerEntity>
