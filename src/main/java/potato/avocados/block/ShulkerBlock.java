@@ -1,13 +1,9 @@
 package potato.avocados.block;
 
-import java.util.List;
-
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
-import potato.avocados.Avocados;
-import potato.avocados.entity.shulker.ShulkerBlockEntity;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.ItemEntity;
@@ -15,7 +11,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.mob.ShulkerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -29,17 +24,8 @@ import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockMirror;
-import net.minecraft.util.BlockRotation;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -49,6 +35,10 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import potato.avocados.*;
+import potato.avocados.entity.shulker.ShulkerBlockEntity;
+
+import java.util.List;
 
 public class ShulkerBlock extends ShulkerBoxBlock implements BlockEntityProvider {
     public static final EnumProperty<Direction> FACING = FacingBlock.FACING;
@@ -176,24 +166,6 @@ public class ShulkerBlock extends ShulkerBoxBlock implements BlockEntityProvider
         if (nbtCompound != null) {
             if (nbtCompound.contains("LootTable", 8)) {
                 tooltip.add(new LiteralText("???????"));
-            }
-            if (nbtCompound.contains("Items", 9)) {
-                DefaultedList<ItemStack> defaultedList = DefaultedList.ofSize(27, ItemStack.EMPTY);
-                Inventories.readNbt(nbtCompound, defaultedList);
-                int i = 0;
-                int j = 0;
-                for (ItemStack itemStack : defaultedList) {
-                    if (itemStack.isEmpty()) continue;
-                    ++j;
-                    if (i > 4) continue;
-                    ++i;
-                    MutableText mutableText = itemStack.getName().shallowCopy();
-                    mutableText.append(" x").append(String.valueOf(itemStack.getCount()));
-                    tooltip.add(mutableText);
-                }
-                if (j - i > 0) {
-                    tooltip.add(new TranslatableText("container.shulkerBox.more", j - i).formatted(Formatting.ITALIC));
-                }
             }
         }
     }

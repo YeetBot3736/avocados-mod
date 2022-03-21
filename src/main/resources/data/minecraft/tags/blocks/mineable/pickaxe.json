@@ -7,6 +7,12 @@
         "avocados:platinum_trapdoor",
         "avocados:platinum_pressure_plate",
         "avocados:platinum_button",
-        "avocados:nether_platinum_ore"
+        "avocados:nether_platinum_ore",
+        "avocados:teal_terracotta",
+        "avocados:fuchsia_terracotta",
+        "avocados:teal_glazed_terracotta",
+        "avocados:fuchsia_glazed_terracotta",
+        "avocados:teal_concrete",
+        "avocados:fuchsia_concrete"
     ]
 }

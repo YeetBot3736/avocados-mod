@@ -2,16 +2,10 @@ package potato.avocados.block;
 
 import java.util.List;
 import java.util.Optional;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DoubleBlockProperties;
-import net.minecraft.block.HorizontalFacingBlock;
-import net.minecraft.block.ShapeContext;
+
+import net.minecraft.block.*;
 import potato.avocados.entity.bed.BedEntity;
+import potato.avocados.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.BedPart;
 import net.minecraft.block.piston.PistonBehavior;
@@ -50,7 +44,7 @@ import net.minecraft.world.explosion.Explosion;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
-public class BedBlk extends HorizontalFacingBlock implements BlockEntityProvider {
+public class BedBlk extends BedBlock {
     public static final EnumProperty<BedPart> PART = Properties.BED_PART;
     public static final BooleanProperty OCCUPIED = Properties.OCCUPIED;
     protected static final VoxelShape TOP_SHAPE = Block.createCuboidShape(0.0, 3.0, 0.0, 16.0, 9.0, 16.0);
@@ -65,7 +59,7 @@ public class BedBlk extends HorizontalFacingBlock implements BlockEntityProvider
     private final DyeColor color;
 
     public BedBlk(DyeColor color, AbstractBlock.Settings settings) {
-        super(settings);
+        super(color, settings);
         this.color = color;
         this.setDefaultState(((this.stateManager.getDefaultState()).with(PART, BedPart.FOOT)).with(OCCUPIED, false));
     }
@@ -103,8 +97,10 @@ public class BedBlk extends HorizontalFacingBlock implements BlockEntityProvider
             if (reason != null) {
                 player.sendMessage(reason.getMessage(), true);
             }
+            Avocados.LOGGER.info("Sleep Failed because " + (reason != null?reason.getMessage():"null"));
         });
         return ActionResult.SUCCESS;
+
     }
 
     public static boolean isBedWorking(World world) {
@@ -185,13 +181,13 @@ public class BedBlk extends HorizontalFacingBlock implements BlockEntityProvider
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         Direction direction = BedBlk.getOppositePartDirection(state).getOpposite();
         switch (direction) {
-            case NORTH: {
+            case NORTH -> {
                 return NORTH_SHAPE;
             }
-            case SOUTH: {
+            case SOUTH -> {
                 return SOUTH_SHAPE;
             }
-            case WEST: {
+            case WEST -> {
                 return WEST_SHAPE;
             }
         }

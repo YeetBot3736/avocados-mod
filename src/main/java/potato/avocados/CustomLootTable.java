@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.util.Identifier;
+import potato.avocados.*;
 
 public class CustomLootTable {
     public static final Identifier SHEEP = EntityType.SHEEP.getLootTableId();

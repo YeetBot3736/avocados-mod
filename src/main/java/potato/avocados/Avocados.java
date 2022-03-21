@@ -5,18 +5,25 @@ import com.google.common.collect.ImmutableList;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.block.*;
-import net.minecraft.block.entity.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.block.enums.BedPart;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.SpriteIdentifier;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.Settings;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Properties;
 import net.minecraft.structure.rule.BlockMatchRuleTest;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -32,9 +39,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import potato.avocados.armor.BaseArmor;
 import potato.avocados.armor.PlatinumArmorMaterial;
-import potato.avocados.block.BedBlk;
-import potato.avocados.block.CakeCandle;
-import potato.avocados.block.ShulkerBlock;
+import potato.avocados.block.*;
+import potato.avocados.entity.banner.BannerBlkEntity;
 import potato.avocados.entity.bed.BedEntity;
 import potato.avocados.entity.shulker.ShulkerBlockEntity;
 import potato.avocados.item.*;
@@ -49,11 +55,12 @@ import potato.avocados.redstone.PressPlateBlk;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.ToIntFunction;
 import java.util.stream.Stream;
 
 import static net.minecraft.client.render.TexturedRenderLayers.SHULKER_BOXES_ATLAS_TEXTURE;
 
-public class Avocados implements ModInitializer{
+public class Avocados implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("avocados");
 	public static final Identifier TEAL_SHEEP = new Identifier("entities/sheep/teal");
 	public static final Identifier FUCHSIA_SHEEP = new Identifier("entities/sheep/fuchsia");
@@ -66,107 +73,115 @@ public class Avocados implements ModInitializer{
 	public static final Item PLATINUM_NUGGET = new Item(new Settings().group(ItemGroup.MISC));
 	public static final Item COOKED_BEET = new Item(new Settings().group(ItemGroup.FOOD).food(AvocadoComponents.COOKED_BEET));
 	public static final Item PLAT_BEET = new Item(new Settings().group(ItemGroup.FOOD).food(AvocadoComponents.PLAT_BEET));
-	public static final Block PLAT_BLOCK = new Block(FabricBlockSettings.of(Material.METAL).strength(55.0f,65.0f).sounds(BlockSoundGroup.METAL));
+	public static final Block PLAT_BLOCK = new Block(FabricBlockSettings.of(Material.METAL).strength(55.0f, 65.0f).sounds(BlockSoundGroup.METAL));
 	public static final Item PLAT_POTATO = new Item(new Settings().group(ItemGroup.FOOD).food(AvocadoComponents.PLAT_POTATO));
 	public static final Item NETHERITE_NUGGET = new Item(new Settings().fireproof().group(ItemGroup.MISC));
-	public static final Block RAW_PLAT_BLOCK =  new Block(FabricBlockSettings.of(Material.METAL).strength(55.0f,65.0f).sounds(BlockSoundGroup.METAL));
+	public static final Block RAW_PLAT_BLOCK = new Block(FabricBlockSettings.of(Material.METAL).strength(55.0f, 65.0f).sounds(BlockSoundGroup.METAL));
 	public static final Item PLAT_STEAK = new Item(new Settings().group(ItemGroup.FOOD).food(AvocadoComponents.PLAT_STEAK));
-	public static final Block PLAT_ORE = new PlatinumOre(FabricBlockSettings.of(Material.METAL).strength(35.0f,90.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block PLAT_ORE = new PlatinumOre(FabricBlockSettings.of(Material.METAL).strength(35.0f, 90.0f).sounds(BlockSoundGroup.STONE));
 	public static final ArmorMaterial PLAT_ARMOUR = new PlatinumArmorMaterial();
-	public static final Block PLAT_PRESSURE_PLATE = new PressPlateBlk(PressurePlateBlock.ActivationRule.EVERYTHING, FabricBlockSettings.of(Material.METAL).strength(51.5f,61.5f).sounds(BlockSoundGroup.METAL));
-	public static final Block PLAT_DOOR = new DoorBlk(FabricBlockSettings.of(Material.METAL).strength(55.0f,65.0f).sounds(BlockSoundGroup.METAL));
-	public static final Block PLAT_BUTTON = new ButtonBlk(FabricBlockSettings.of(Material.METAL).strength(6.0f,6.0f).sounds(BlockSoundGroup.METAL));
+	public static final Block PLAT_PRESSURE_PLATE = new PressPlateBlk(PressurePlateBlock.ActivationRule.EVERYTHING, FabricBlockSettings.of(Material.METAL).strength(51.5f, 61.5f).sounds(BlockSoundGroup.METAL));
+	public static final Block PLAT_DOOR = new DoorBlk(FabricBlockSettings.of(Material.METAL).strength(55.0f, 65.0f).sounds(BlockSoundGroup.METAL));
+	public static final Block PLAT_BUTTON = new ButtonBlk(FabricBlockSettings.of(Material.METAL).strength(6.0f, 6.0f).sounds(BlockSoundGroup.METAL));
 	public static final Item PLAT_HORSE_ARMOR = new PlatHorseArmor(7, "platinum", new Item.Settings().maxCount(1).group(ItemGroup.MISC));
-	public static final Block PLAT_TRAPDOOR = new PlatTrapDoor(FabricBlockSettings.of(Material.METAL).strength(65.0f,65.0f).sounds(BlockSoundGroup.METAL));
-	public static final Block NETHER_PLAT_ORE = new NetherPlatinumOre(FabricBlockSettings.of(Material.METAL).strength(35.0f,35.0f).sounds(BlockSoundGroup.NETHERRACK));
+	public static final Block PLAT_TRAPDOOR = new PlatTrapDoor(FabricBlockSettings.of(Material.METAL).strength(65.0f, 65.0f).sounds(BlockSoundGroup.METAL));
+	public static final Block NETHER_PLAT_ORE = new NetherPlatinumOre(FabricBlockSettings.of(Material.METAL).strength(35.0f, 35.0f).sounds(BlockSoundGroup.NETHERRACK));
 	public static final DyeColor TEAL_COLOR = ClassTinkerers.getEnum(DyeColor.class, "TEAL");
-	public static final DyeColor FUCHSIA_COLOR= ClassTinkerers.getEnum(DyeColor.class, "FUCHSIA");
-	public static final Item TEAL_DYE= new DyeItem(TEAL_COLOR, new Item.Settings().group(ItemGroup.MISC));
-	public static final Block TEAL_TERRACOTTA = new Block(FabricBlockSettings.of(Material.STONE).strength(12.5f,42.0f).sounds(BlockSoundGroup.STONE));
-	public static final Block TEAL_WOOL = new Block(FabricBlockSettings.of(Material.WOOL).strength(8.0f,8.0f).sounds(BlockSoundGroup.WOOL));
-	public static final Block TEAL_GLAZED_TERRACOTTA = new GlazedTerracottaBlock(FabricBlockSettings.of(Material.STONE).strength(14.0f,14.0f).sounds(BlockSoundGroup.STONE));
-	public static final Block TEAL_CARPET = new CarpetBlock(FabricBlockSettings.of(Material.CARPET).strength(1.0f,1.0f).sounds(BlockSoundGroup.WOOL));
-	public static final Block TEAL_STAINED_GLASS = new StainedGlassBlock(TEAL_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f,3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
-	public static final Block TEAL_STAINED_GLASS_PANE = new StainedGlassPaneBlock(TEAL_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f,3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
-	public static final Block TEAL_SHULKER_BOX = createShulkerBoxBlock(TEAL_COLOR, FabricBlockSettings.of(Material.SHULKER_BOX).strength(20.0f,20.0f).sounds(BlockSoundGroup.STONE));
-	public static final Block TEAL_CONCRETE = new Block(FabricBlockSettings.of(Material.STONE).strength(18.0f,18.0f).sounds(BlockSoundGroup.STONE));
-	public static final Block TEAL_CONCRETE_POWDER = new ConcretePowderBlock(TEAL_CONCRETE, FabricBlockSettings.of(Material.SOIL).strength(5.0f,5.0f).sounds(BlockSoundGroup.SAND));
+	public static final DyeColor FUCHSIA_COLOR = ClassTinkerers.getEnum(DyeColor.class, "FUCHSIA");
+	public static final Item TEAL_DYE = new DyeItem(TEAL_COLOR, new Item.Settings().group(ItemGroup.MISC));
+	public static final Block TEAL_TERRACOTTA = new Block(FabricBlockSettings.of(Material.STONE).strength(12.5f, 42.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block TEAL_WOOL = new Block(FabricBlockSettings.copyOf(Blocks.WHITE_WOOL));
+    public static final Block TEAL_GLAZED_TERRACOTTA = new GlazedTerracottaBlock(FabricBlockSettings.of(Material.STONE).strength(14.0f, 14.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block TEAL_CARPET = new CarpetBlock(FabricBlockSettings.of(Material.CARPET).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOL));
+	public static final Block TEAL_STAINED_GLASS = new StainedGlassBlock(TEAL_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f, 3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
+	public static final Block TEAL_STAINED_GLASS_PANE = new StainedGlassPaneBlock(TEAL_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f, 3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
+	public static final Block TEAL_SHULKER_BOX = createShulkerBoxBlock(TEAL_COLOR, FabricBlockSettings.of(Material.SHULKER_BOX).strength(20.0f, 20.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block TEAL_CONCRETE = new Block(FabricBlockSettings.of(Material.STONE).strength(18.0f, 18.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block TEAL_CONCRETE_POWDER = new ConcretePowderBlock(TEAL_CONCRETE, FabricBlockSettings.copyOf(Blocks.ORANGE_CONCRETE_POWDER));
 	public static final Block TEAL_BED = createBedBlock(TEAL_COLOR);
-	public static final Block TEAL_CANDLE = new CandleBlock(FabricBlockSettings.of(Material.DECORATION).strength(1.0f,1.0f).sounds(BlockSoundGroup.CANDLE));
-	public static final Block TEAL_CANDLE_CAKE = new CakeCandle(TEAL_CANDLE, FabricBlockSettings.of(Material.DECORATION).strength(1.0f,1.0f).sounds(BlockSoundGroup.CANDLE));
-	public static final Block TEAL_BANNER = new BannerBlock(TEAL_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f,10.0f).sounds(BlockSoundGroup.WOOD));
-	public static final Block TEAL_WALL_BANNER = new WallBannerBlock(TEAL_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f,10.0f).sounds(BlockSoundGroup.WOOD));
-	public static final Item FUCHSIA_DYE= new DyeItem(FUCHSIA_COLOR, new Item.Settings().group(ItemGroup.MISC));
-	public static final Block FUCHSIA_TERRACOTTA = new Block(FabricBlockSettings.of(Material.STONE).strength(12.5f,42.0f).sounds(BlockSoundGroup.STONE));
-	public static final Block FUCHSIA_WOOL = new Block(FabricBlockSettings.of(Material.WOOL).strength(8.0f,8.0f).sounds(BlockSoundGroup.WOOL));
-	public static final Block FUCHSIA_GLAZED_TERRACOTTA = new GlazedTerracottaBlock(FabricBlockSettings.of(Material.STONE).strength(14.0f,14.0f).sounds(BlockSoundGroup.STONE));
-	public static final Block FUCHSIA_CARPET = new CarpetBlock(FabricBlockSettings.of(Material.CARPET).strength(1.0f,1.0f).sounds(BlockSoundGroup.WOOL));
-	public static final Block FUCHSIA_STAINED_GLASS = new StainedGlassBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f,3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
-	public static final Block FUCHSIA_STAINED_GLASS_PANE = new StainedGlassPaneBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f,3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
-	public static final Block FUCHSIA_SHULKER_BOX = createShulkerBoxBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.SHULKER_BOX).strength(20.0f,20.0f).sounds(BlockSoundGroup.STONE));
-	public static final Block FUCHSIA_CONCRETE = new Block(FabricBlockSettings.of(Material.STONE).strength(18.0f,18.0f).sounds(BlockSoundGroup.STONE));
-	public static final Block FUCHSIA_CONCRETE_POWDER = new ConcretePowderBlock(FUCHSIA_CONCRETE, FabricBlockSettings.of(Material.SOIL).strength(5.0f,5.0f).sounds(BlockSoundGroup.SAND));
+	public static final Block TEAL_CANDLE = new CandleBlock(FabricBlockSettings.of(Material.DECORATION).strength(0.1f, 0.1f).sounds(BlockSoundGroup.CANDLE).luminance(CandleBlock.STATE_TO_LUMINANCE));
+	public static final Block TEAL_CANDLE_CAKE = new CakeCandle(TEAL_CANDLE, FabricBlockSettings.of(Material.DECORATION).strength(1.0f, 1.0f).sounds(BlockSoundGroup.CANDLE).luminance(lum(3)));
+	public static final Block TEAL_BANNER = new BannerBlk(TEAL_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOD));
+	public static final Block TEAL_WALL_BANNER = new WallBannerBlk(TEAL_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOD));
+	public static final Item FUCHSIA_DYE = new DyeItem(FUCHSIA_COLOR, new Item.Settings().group(ItemGroup.MISC));
+	public static final Block FUCHSIA_TERRACOTTA = new Block(FabricBlockSettings.of(Material.STONE).strength(12.5f, 42.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block FUCHSIA_WOOL = new Block(FabricBlockSettings.copyOf(Blocks.GREEN_WOOL));
+    public static final Block FUCHSIA_GLAZED_TERRACOTTA = new GlazedTerracottaBlock(FabricBlockSettings.of(Material.STONE).strength(14.0f, 14.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block FUCHSIA_CARPET = new CarpetBlock(FabricBlockSettings.of(Material.CARPET).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOL));
+	public static final Block FUCHSIA_STAINED_GLASS = new StainedGlassBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f, 3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
+	public static final Block FUCHSIA_STAINED_GLASS_PANE = new StainedGlassPaneBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f, 3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
+	public static final Block FUCHSIA_SHULKER_BOX = createShulkerBoxBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.SHULKER_BOX).strength(20.0f, 20.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block FUCHSIA_CONCRETE = new Block(FabricBlockSettings.of(Material.STONE).strength(18.0f, 18.0f).sounds(BlockSoundGroup.STONE));
+	public static final Block FUCHSIA_CONCRETE_POWDER = new ConcretePowderBlock(FUCHSIA_CONCRETE, FabricBlockSettings.copyOf(Blocks.BLACK_CONCRETE_POWDER));
 	public static final Block FUCHSIA_BED = createBedBlock(FUCHSIA_COLOR);
-	public static final Block FUCHSIA_CANDLE = new CandleBlock(FabricBlockSettings.of(Material.DECORATION).strength(1.0f,1.0f).sounds(BlockSoundGroup.CANDLE));
-	public static final Block FUCHSIA_CANDLE_CAKE = new CakeCandle(FUCHSIA_CANDLE, FabricBlockSettings.of(Material.DECORATION).strength(1.0f,1.0f).sounds(BlockSoundGroup.CANDLE));
-	public static final Block FUCHSIA_BANNER = new BannerBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f,10.0f).sounds(BlockSoundGroup.WOOD));
-	public static final Block FUCHSIA_WALL_BANNER = new WallBannerBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f,10.0f).sounds(BlockSoundGroup.WOOD));
-	public static final List<SpriteIdentifier> HALLO = Stream.of("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black", "teal", "fuchsia").map(string -> new SpriteIdentifier(SHULKER_BOXES_ATLAS_TEXTURE, new Identifier("entity/shulker/shulker_" + string))).collect(ImmutableList.toImmutableList());public static final EntityModelLayer SH = new EntityModelLayer(new Identifier("avocados","shulker"), "main");
+	public static final Block FUCHSIA_CANDLE = new CandleBlock(FabricBlockSettings.of(Material.DECORATION).strength(1.0f, 1.0f).sounds(BlockSoundGroup.CANDLE).luminance(CandleBlock.STATE_TO_LUMINANCE));
+	public static final Block FUCHSIA_CANDLE_CAKE = new CakeCandle(FUCHSIA_CANDLE, FabricBlockSettings.of(Material.DECORATION).strength(1.0f, 1.0f).sounds(BlockSoundGroup.CANDLE).luminance(lum(3)));
+	public static final Block FUCHSIA_BANNER = new BannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f, 10.0f).sounds(BlockSoundGroup.WOOD));
+	public static final Block FUCHSIA_WALL_BANNER = new WallBannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f, 10.0f).sounds(BlockSoundGroup.WOOD));
+	public static final List<SpriteIdentifier> HALLO = Stream.of("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black", "teal", "fuchsia").map(string -> new SpriteIdentifier(SHULKER_BOXES_ATLAS_TEXTURE, new Identifier("entity/shulker/shulker_" + string))).collect(ImmutableList.toImmutableList());
+	public static final EntityModelLayer SH = new EntityModelLayer(new Identifier("avocados", "shulker"), "main");
 	public static BlockEntityType<ShulkerBlockEntity> SHULKER_E;
 	public static BlockEntityType<BedEntity> BED_E;
-	public static BlockEntityType<BannerBlockEntity> TEAL_BANNER_E, FUCHSIA_BANNER_E;
+	public static BlockEntityType<BannerBlkEntity> BANNER_E;
 
-	public void regItem(String ItemName, Item item){
+	public void regItem(String ItemName, Item item) {
 		Registry.register(Registry.ITEM, new Identifier("avocados", ItemName), item);
 	}
-	public void regBlock(String BlockName, Block block, ItemGroup group){
-		Registry.register(Registry.BLOCK, new Identifier("avocados",BlockName), block);
-		if(block instanceof BannerBlock){
+
+	public void regBlock(String BlockName, Block block, ItemGroup group) {
+		Registry.register(Registry.BLOCK, new Identifier("avocados", BlockName), block);
+		if (block instanceof BannerBlock) {
 			Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BlockItem(block, new Item.Settings().group(group).maxCount(16)));
-		}
-		else if(block instanceof ShulkerBlock || block instanceof BedBlock){
+		} else if (block instanceof ShulkerBlock || block instanceof BedBlock) {
 			Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BlockItem(block, new Item.Settings().group(group).maxCount(1)));
-		}
-		else Registry.register(Registry.ITEM, new Identifier("avocados",BlockName),new BlockItem(block, new Item.Settings().group(group)));
+		} else
+			Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BlockItem(block, new Item.Settings().group(group)));
 	}
+
 	private static ShulkerBlock createShulkerBoxBlock(DyeColor color, AbstractBlock.Settings settings) {
 		AbstractBlock.ContextPredicate contextPredicate = (state, world, pos) -> {
 			BlockEntity blockEntity = world.getBlockEntity(pos);
 			if (!(blockEntity instanceof ShulkerBoxBlockEntity)) {
 				return true;
 			}
-			ShulkerBlockEntity shulkerBlockEntity = (ShulkerBlockEntity)blockEntity;
+			ShulkerBlockEntity shulkerBlockEntity = (ShulkerBlockEntity) blockEntity;
 			return shulkerBlockEntity.suffocates();
 		};
 		return new ShulkerBlock(color, settings.strength(2.0f).dynamicBounds().nonOpaque().suffocates(contextPredicate).blockVision(contextPredicate));
+	}
+	private static ToIntFunction<BlockState> lum(int litLevel) {
+		return state -> state.get(Properties.LIT) != false ? litLevel : 0;
 	}
 	private static final ConfiguredFeature<?, ?> ORE_PLATINUM = Feature.ORE
 			.configure(new OreFeatureConfig(
 					new BlockMatchRuleTest(Blocks.END_STONE),
 					PLAT_ORE.getDefaultState(), 12
 			));
-	private static final PlacedFeature ORE_PLATINUM_THE_END = ORE_PLATINUM.withPlacement(CountPlacementModifier.of(2), SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.getBottom(),YOffset.fixed(80)));
+	private static final PlacedFeature ORE_PLATINUM_THE_END = ORE_PLATINUM.withPlacement(CountPlacementModifier.of(2), SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(80)));
 	private static final ConfiguredFeature<?, ?> NETHER_PLATI_ORE = Feature.ORE
 			.configure(new OreFeatureConfig(OreConfiguredFeatures.BASE_STONE_NETHER,
 					NETHER_PLAT_ORE.getDefaultState(), 7
 			));
-	private static final PlacedFeature NETHER_PLATINUM_ORE = NETHER_PLATI_ORE.withPlacement(CountPlacementModifier.of(5),SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.getBottom(),YOffset.fixed(85)));
+	private static final PlacedFeature NETHER_PLATINUM_ORE = NETHER_PLATI_ORE.withPlacement(CountPlacementModifier.of(5), SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(85)));
+
 	private static BedBlk createBedBlock(DyeColor color) {
 		return new BedBlk(color, AbstractBlock.Settings.of(Material.WOOL, state -> state.get(BedBlock.PART) == BedPart.FOOT ? color.getMapColor() : MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque());
 	}
+
 	public static Map<DyeColor, ItemConvertible> MOD_DROP = SheepDropMixin.getDROPS();
+
 	@Override
-  public void onInitialize() {
-		RendererMixin.setTexture(HALLO);	
+	public void onInitialize() {
+		RendererMixin.setTexture(HALLO);
 		CustomLootTable.register();
 		ComposterBlock.ITEM_TO_LEVEL_INCREASE_CHANCE.put(Avocados.AVOCADO.asItem(), 0.65f);
 		MOD_DROP.put(TEAL_COLOR, TEAL_WOOL);
 		MOD_DROP.put(FUCHSIA_COLOR, FUCHSIA_WOOL);
 		SheepDropMixin.setDrops(MOD_DROP);
-		SHULKER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE,new Identifier("avocados","shulker_box"), FabricBlockEntityTypeBuilder.create(ShulkerBlockEntity::new, TEAL_SHULKER_BOX, FUCHSIA_SHULKER_BOX).build());
-		BED_E = Registry.register(Registry.BLOCK_ENTITY_TYPE,new Identifier("avocados","bed"), FabricBlockEntityTypeBuilder.create(BedEntity::new,TEAL_BED, FUCHSIA_BED).build());
-		TEAL_BANNER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE,new Identifier("avocados","teal_banner"), FabricBlockEntityTypeBuilder.create(BannerBlockEntity::new).build());
-		FUCHSIA_BANNER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("avocados","fuchsia_banner"), FabricBlockEntityTypeBuilder.create(BannerBlockEntity::new).build());
+		LOGGER.info("Avocados is initialising!");
+		SHULKER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("avocados", "shulker_box"), FabricBlockEntityTypeBuilder.create(ShulkerBlockEntity::new, TEAL_SHULKER_BOX, FUCHSIA_SHULKER_BOX).build());
+		BED_E = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("avocados", "bed"), FabricBlockEntityTypeBuilder.create(BedEntity::new, TEAL_BED, FUCHSIA_BED).build());
+		BANNER_E = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("avocados", "banner"), FabricBlockEntityTypeBuilder.create(BannerBlkEntity::new, TEAL_BANNER, TEAL_WALL_BANNER, FUCHSIA_BANNER, FUCHSIA_WALL_BANNER).build());
 		Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, new Identifier("avocados", "platinum_ore"), ORE_PLATINUM);
 		Registry.register(BuiltinRegistries.PLACED_FEATURE, new Identifier("avocados", "platinum_ore"), ORE_PLATINUM_THE_END);
 		BiomeModifications.addFeature(BiomeSelectors.foundInTheEnd(), GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier("avocados", "platinum_ore")));
@@ -245,7 +260,13 @@ public class Avocados implements ModInitializer{
 		Registry.register(Registry.BLOCK, new Identifier("avocados", "fuchsia_wall_banner"), FUCHSIA_WALL_BANNER);
 		Registry.register(Registry.BLOCK, new Identifier("avocados", "teal_candle_cake"), TEAL_CANDLE_CAKE);
 		Registry.register(Registry.BLOCK, new Identifier("avocados", "fuchsia_candle_cake"), FUCHSIA_CANDLE_CAKE);
-	}	
+		EntitySleepEvents.ALLOW_BED.register((entity, pos, state, result) -> state.isOf(TEAL_BED) ? ActionResult.SUCCESS : ActionResult.PASS);
+		EntitySleepEvents.ALLOW_BED.register((entity, pos, state, result) -> state.isOf(FUCHSIA_BED) ? ActionResult.SUCCESS : ActionResult.PASS);
+		FlammableBlockRegistry.getDefaultInstance().add(TEAL_WOOL, 30,60);
+		FlammableBlockRegistry.getDefaultInstance().add(FUCHSIA_WOOL,30,60);
+		FlammableBlockRegistry.getDefaultInstance().add(TEAL_CARPET, 20, 60);
+		FlammableBlockRegistry.getDefaultInstance().add(FUCHSIA_CARPET,20,60);
+	}
 }
 
 

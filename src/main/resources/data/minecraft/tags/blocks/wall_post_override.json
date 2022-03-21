@@ -1,6 +1,8 @@
 {
   "values":[
 	"avocados:teal_banner",
-	"avocados:fuchsia_banner"
+	"avocados:fuchsia_banner",
+	"avocados:teal_wall_banner",
+	"avocados:fuchsia_wall_banner"
   ]
 }
