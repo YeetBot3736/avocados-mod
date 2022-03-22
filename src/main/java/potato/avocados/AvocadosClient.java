@@ -14,8 +14,8 @@ import potato.avocados.entity.shulker.ShulkerBlockModel;
 
 public class AvocadosClient implements ClientModInitializer {
     public static final EntityModelLayer ENTITY_MODEL_LAYER = new EntityModelLayer(new Identifier("avocados","shulker"),"main");
-    public static final EntityModelLayer BED_MODEL_H = new EntityModelLayer(new Identifier("avocados","bed"),"head");
-    public static final EntityModelLayer BED_MODEL_F = new EntityModelLayer(new Identifier("avocados","bed"),"foot");
+    public static final EntityModelLayer BED_MODEL_H = new EntityModelLayer(new Identifier("avocados","bed_head"),"main");
+    public static final EntityModelLayer BED_MODEL_F = new EntityModelLayer(new Identifier("avocados","bed_foot"),"main");
     public static final EntityModelLayer BANNER_MODEL = new EntityModelLayer(new Identifier("avocados","banner"),"main");
     @Override
     public void onInitializeClient() {
@@ -30,7 +30,5 @@ public class AvocadosClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(BED_MODEL_F, BedEntityRenderer::getFootTexturedModelData);
         BlockEntityRendererRegistry.register(Avocados.BANNER_E, BannerBlkEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(BANNER_MODEL, BannerBlkEntityRenderer::getTexturedModelData);
-
-
     }
 }
