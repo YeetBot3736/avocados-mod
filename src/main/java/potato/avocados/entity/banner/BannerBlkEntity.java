@@ -12,7 +12,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +22,6 @@ import java.util.List;
 import static potato.avocados.block.BannerBlk.getForColor;
 
 public class BannerBlkEntity extends BannerBlockEntity {
-    public static final int field_31296 = 6;
     public static final String PATTERNS_KEY = "Patterns";
     public static final String PATTERN_KEY = "Pattern";
     public static final String COLOR_KEY = "Color";
@@ -37,12 +35,7 @@ public class BannerBlkEntity extends BannerBlockEntity {
 
     public BannerBlkEntity(BlockPos pos, BlockState state) {
         super(pos, state);
-        this.baseColor = ((AbstractBannerBlock)state.getBlock()).getColor();
-    }
-
-    public BannerBlkEntity(BlockPos pos, BlockState state, DyeColor baseColor) {
-        this(pos, state);
-        this.baseColor = baseColor;
+        this.baseColor = ((AbstractBannerBlock) state.getBlock()).getColor();
     }
 
     @Nullable
@@ -66,44 +59,11 @@ public class BannerBlkEntity extends BannerBlockEntity {
         this.customName = stack.hasCustomName() ? stack.getName() : null;
     }
 
-    @Override
-    public Text getName() {
-        if (this.customName != null) {
-            return this.customName;
-        }
-        return new TranslatableText("block.minecraft.banner");
-    }
-
-    @Override
-    @Nullable
-    public Text getCustomName() {
-        return this.customName;
-    }
-
     public void setCustomName(Text customName) {
         this.customName = customName;
     }
 
-    @Override
-    protected void writeNbt(NbtCompound nbt) {
-        super.writeNbt(nbt);
-        if (this.patternListNbt != null) {
-            nbt.put(PATTERNS_KEY, this.patternListNbt);
-        }
-        if (this.customName != null) {
-            nbt.putString("CustomName", Text.Serializer.toJson(this.customName));
-        }
-    }
 
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        super.readNbt(nbt);
-        if (nbt.contains("CustomName", 8)) {
-            this.customName = Text.Serializer.fromJson(nbt.getString("CustomName"));
-        }
-        this.patternListNbt = nbt.getList(PATTERNS_KEY, 10);
-        this.patterns = null;
-    }
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return this.createNbt();

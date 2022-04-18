@@ -16,7 +16,6 @@ import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.block.enums.BedPart;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.SpriteIdentifier;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.Settings;
@@ -150,7 +149,7 @@ public class Avocados implements ModInitializer {
 		return new ShulkerBlock(color, settings.strength(2.0f).dynamicBounds().nonOpaque().suffocates(contextPredicate).blockVision(contextPredicate));
 	}
 	private static ToIntFunction<BlockState> lum(int litLevel) {
-		return state -> state.get(Properties.LIT) != false ? litLevel : 0;
+		return state -> state.get(Properties.LIT) ? litLevel : 0;
 	}
 	private static final ConfiguredFeature<?, ?> ORE_PLATINUM = Feature.ORE
 			.configure(new OreFeatureConfig(

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import potato.avocados.Avocados;
+import potato.avocados.*;
 
 @Mixin(SheepEntity.class)
 public abstract class SheepColorMixin extends Entity {

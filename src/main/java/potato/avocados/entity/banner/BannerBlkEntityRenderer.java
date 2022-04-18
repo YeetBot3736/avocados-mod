@@ -1,17 +1,11 @@
 package potato.avocados.entity.banner;
 
 import com.mojang.datafixers.util.Pair;
-import java.util.List;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BannerPattern;
-import net.minecraft.client.model.ModelData;
-import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.model.ModelPartBuilder;
-import net.minecraft.client.model.ModelPartData;
-import net.minecraft.client.model.ModelTransform;
-import net.minecraft.client.model.TexturedModelData;
+import net.minecraft.client.model.*;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.VertexConsumer;
@@ -29,11 +23,10 @@ import net.minecraft.util.math.Vec3f;
 import potato.avocados.block.BannerBlk;
 import potato.avocados.block.WallBannerBlk;
 
+import java.util.List;
+
 @Environment(value=EnvType.CLIENT)
 public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEntity> {
-    private static final int WIDTH = 20;
-    private static final int HEIGHT = 40;
-    private static final int ROTATIONS = 16;
     public static final String BANNER = "flag";
     private static final String PILLAR = "pole";
     private static final String CROSSBAR = "bar";
@@ -61,7 +54,6 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
     public void render(BannerBlkEntity bannerBlockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
         long l;
         List<Pair<BannerPattern, DyeColor>> list = bannerBlockEntity.getPatterns();
-        float g = 0.6666667f;
         boolean bl = bannerBlockEntity.getWorld() == null;
         matrixStack.push();
         if (bl) {
@@ -73,7 +65,7 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
             BlockState blockState = bannerBlockEntity.getCachedState();
             if (blockState.getBlock() instanceof BannerBlk) {
                 matrixStack.translate(0.5, 0.5, 0.5);
-                float h = (float)(-blockState.get(BannerBlk.ROTATION).intValue() * 360) / 16.0f;
+                float h = (float)(-blockState.get(BannerBlk.ROTATION) * 360) / 16.0f;
                 matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(h));
                 this.pillar.visible = true;
             } else {
@@ -90,16 +82,15 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
         this.pillar.render(matrixStack, vertexConsumer, i, j);
         this.crossbar.render(matrixStack, vertexConsumer, i, j);
         BlockPos blockPos = bannerBlockEntity.getPos();
-        float k = ((float)Math.floorMod((long)(blockPos.getX() * 7 + blockPos.getY() * 9 + blockPos.getZ() * 13) + l, 100L) + f) / 100.0f;
+        float k = ((float)Math.floorMod(blockPos.getX() * 7L + blockPos.getY() * 9L + blockPos.getZ() * 13L + l, 100L) + f) / 100.0f;
         this.banner.pitch = (-0.0125f + 0.01f * MathHelper.cos((float)Math.PI * 2 * k)) * (float)Math.PI;
         this.banner.pivotY = -32.0f;
-        net.minecraft.client.render.block.entity.BannerBlockEntityRenderer.renderCanvas(matrixStack, vertexConsumerProvider, i, j, this.banner, ModelLoader.BANNER_BASE, true, list);
+        renderCanvas(matrixStack, vertexConsumerProvider, i, j, this.banner, ModelLoader.BANNER_BASE, true, list);
         matrixStack.pop();
         matrixStack.pop();
     }
-
     public static void renderCanvas(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, ModelPart canvas, SpriteIdentifier baseSprite, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns) {
-        net.minecraft.client.render.block.entity.BannerBlockEntityRenderer.renderCanvas(matrices, vertexConsumers, light, overlay, canvas, baseSprite, isBanner, patterns, false);
+        renderCanvas(matrices, vertexConsumers, light, overlay, canvas, baseSprite, isBanner, patterns, false);
     }
 
     public static void renderCanvas(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, ModelPart canvas, SpriteIdentifier baseSprite, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns, boolean glint) {

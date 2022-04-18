@@ -11,7 +11,7 @@ import potato.avocados.*;
 @Mixin(SheepEntity.class)
 public class SheepEntityMixin {
     private final SheepEntity that = (SheepEntity)(Object)this;
-    @Inject(method = "getLootTableId", at = @At("HEAD"))
+    @Inject(method = "getLootTableId", at = @At("HEAD"), cancellable = true)
     public void getLootTableId(CallbackInfoReturnable<Identifier> cir) {
         if (that.isSheared()) {
             if (that.getColor() == Avocados.TEAL_COLOR) {
