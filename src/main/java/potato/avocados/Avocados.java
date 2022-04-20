@@ -129,12 +129,16 @@ public class Avocados implements ModInitializer {
 
 	public void regBlock(String BlockName, Block block, ItemGroup group) {
 		Registry.register(Registry.BLOCK, new Identifier("avocados", BlockName), block);
-		if (block instanceof BannerBlock) {
-			Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BlockItem(block, new Item.Settings().group(group).maxCount(16)));
-		} else if (block instanceof ShulkerBlock || block instanceof BedBlock) {
+		if (block instanceof ShulkerBlock || block instanceof BedBlock) {
 			Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BlockItem(block, new Item.Settings().group(group).maxCount(1)));
-		} else
+		} else {
 			Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BlockItem(block, new Item.Settings().group(group)));
+		}
+	}
+	public void regBannerBlock(Block banner, Block wallbanner, String BlockName, String WallBannerBlockName){
+		Registry.register(Registry.BLOCK, new Identifier("avocados", BlockName), banner);
+		Registry.register(Registry.BLOCK, new Identifier("avocados", WallBannerBlockName), wallbanner);
+		Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BannerItem(banner, wallbanner, new Item.Settings().group(ItemGroup.DECORATIONS).maxCount(16)));
 	}
 
 	private static ShulkerBlock createShulkerBoxBlock(DyeColor color, AbstractBlock.Settings settings) {
@@ -240,7 +244,7 @@ public class Avocados implements ModInitializer {
 		regBlock("teal_concrete_powder", TEAL_CONCRETE_POWDER, ItemGroup.BUILDING_BLOCKS);
 		regBlock("teal_bed", TEAL_BED, ItemGroup.DECORATIONS);
 		regBlock("teal_candle", TEAL_CANDLE, ItemGroup.DECORATIONS);
-		regBlock("teal_banner", TEAL_BANNER, ItemGroup.DECORATIONS);
+		regBannerBlock(TEAL_BANNER, TEAL_WALL_BANNER, "teal_banner","teal_wall_banner");
 		regItem("fuchsia_dye", FUCHSIA_DYE);
 		regBlock("fuchsia_terracotta", FUCHSIA_TERRACOTTA, ItemGroup.BUILDING_BLOCKS);
 		regBlock("fuchsia_wool", FUCHSIA_WOOL, ItemGroup.BUILDING_BLOCKS);
@@ -253,10 +257,7 @@ public class Avocados implements ModInitializer {
 		regBlock("fuchsia_concrete_powder", FUCHSIA_CONCRETE_POWDER, ItemGroup.BUILDING_BLOCKS);
 		regBlock("fuchsia_bed", FUCHSIA_BED, ItemGroup.DECORATIONS);
 		regBlock("fuchsia_candle", FUCHSIA_CANDLE, ItemGroup.DECORATIONS);
-		regBlock("fuchsia_banner", FUCHSIA_BANNER, ItemGroup.DECORATIONS);
-		//No need any BlockItem for WallBanners or CandleCakeBlocks
-		Registry.register(Registry.BLOCK, new Identifier("avocados", "teal_wall_banner"), TEAL_WALL_BANNER);
-		Registry.register(Registry.BLOCK, new Identifier("avocados", "fuchsia_wall_banner"), FUCHSIA_WALL_BANNER);
+		regBannerBlock(FUCHSIA_BANNER, FUCHSIA_WALL_BANNER, "fuchsia_banner","fuchsia_wall_banner");
 		Registry.register(Registry.BLOCK, new Identifier("avocados", "teal_candle_cake"), TEAL_CANDLE_CAKE);
 		Registry.register(Registry.BLOCK, new Identifier("avocados", "fuchsia_candle_cake"), FUCHSIA_CANDLE_CAKE);
 		EntitySleepEvents.ALLOW_BED.register((entity, pos, state, result) -> state.isOf(TEAL_BED) ? ActionResult.SUCCESS : ActionResult.PASS);

@@ -15,11 +15,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
+import potato.avocados.block.BannerBlk;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static potato.avocados.block.BannerBlk.getForColor;
 
 public class BannerBlkEntity extends BannerBlockEntity {
     public static final String PATTERNS_KEY = "Patterns";
@@ -92,7 +91,7 @@ public class BannerBlkEntity extends BannerBlockEntity {
     }
 
     public ItemStack getPickStack() {
-        ItemStack itemStack = new ItemStack(getForColor(this.baseColor));
+        ItemStack itemStack = new ItemStack(BannerBlk.getForColor(this.baseColor));
         if (this.patternListNbt != null && !this.patternListNbt.isEmpty()) {
             NbtCompound nbtCompound = new NbtCompound();
             nbtCompound.put(PATTERNS_KEY, this.patternListNbt.copy());
