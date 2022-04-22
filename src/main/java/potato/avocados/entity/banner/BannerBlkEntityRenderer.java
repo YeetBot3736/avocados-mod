@@ -12,7 +12,6 @@ import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.model.ModelLoader;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -20,6 +19,7 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
+import potato.avocados.AvocadosClient;
 import potato.avocados.block.BannerBlk;
 import potato.avocados.block.WallBannerBlk;
 
@@ -35,7 +35,7 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
     private final ModelPart crossbar;
 
     public BannerBlkEntityRenderer(BlockEntityRendererFactory.Context ctx) {
-        ModelPart modelPart = ctx.getLayerModelPart(EntityModelLayers.BANNER);
+        ModelPart modelPart = ctx.getLayerModelPart(AvocadosClient.BANNER_MODEL);
         this.banner = modelPart.getChild(BANNER);
         this.pillar = modelPart.getChild(PILLAR);
         this.crossbar = modelPart.getChild(CROSSBAR);
@@ -53,6 +53,7 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
     @Override
     public void render(BannerBlkEntity bannerBlockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
         long l;
+        float h;
         List<Pair<BannerPattern, DyeColor>> list = bannerBlockEntity.getPatterns();
         boolean bl = bannerBlockEntity.getWorld() == null;
         matrixStack.push();
@@ -65,12 +66,12 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
             BlockState blockState = bannerBlockEntity.getCachedState();
             if (blockState.getBlock() instanceof BannerBlk) {
                 matrixStack.translate(0.5, 0.5, 0.5);
-                float h = (float)(-blockState.get(BannerBlk.ROTATION) * 360) / 16.0f;
+                h = (float)(-blockState.get(BannerBlk.ROTATION) * 360) / 16.0f;
                 matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(h));
                 this.pillar.visible = true;
             } else {
                 matrixStack.translate(0.5, -0.1666666716337204, 0.5);
-                float h = -blockState.get(WallBannerBlk.FACING).asRotation();
+                h = -blockState.get(WallBannerBlk.FACING).asRotation();
                 matrixStack.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(h));
                 matrixStack.translate(0.0, -0.3125, -0.4375);
                 this.pillar.visible = false;

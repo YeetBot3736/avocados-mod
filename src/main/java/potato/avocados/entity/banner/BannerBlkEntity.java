@@ -16,8 +16,11 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 import potato.avocados.block.BannerBlk;
+import potato.avocados.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class BannerBlkEntity extends BannerBlockEntity {
@@ -31,12 +34,20 @@ public class BannerBlkEntity extends BannerBlockEntity {
     private NbtList patternListNbt;
     @Nullable
     private List<Pair<BannerPattern, DyeColor>> patterns;
-
+    private static DyeColor[] dye =  Arrays.stream(DyeColor.values()).sorted(Comparator.comparingInt(DyeColor::getId)).toArray(DyeColor[]::new);
+    static{
+        dye = Arrays.copyOf(dye, dye.length + 2);
+        dye[dye.length - 2] = Avocados.TEAL_COLOR;
+        dye[dye.length - 1] = Avocados.FUCHSIA_COLOR;
+    }
     public BannerBlkEntity(BlockPos pos, BlockState state) {
         super(pos, state);
         this.baseColor = ((AbstractBannerBlock) state.getBlock()).getColor();
     }
-
+    public static DyeColor byId(int id){
+        if(id < 0 || id > dye.length) return DyeColor.WHITE;
+        return dye[id];
+    }
     @Nullable
     public static NbtList getPatternListNbt(ItemStack stack) {
         NbtList nbtList = null;
@@ -84,7 +95,7 @@ public class BannerBlkEntity extends BannerBlockEntity {
                 BannerPattern bannerPattern = BannerPattern.byId(nbtCompound.getString(PATTERN_KEY));
                 if (bannerPattern == null) continue;
                 int j = nbtCompound.getInt(COLOR_KEY);
-                list.add(Pair.of(bannerPattern, DyeColor.byId(j)));
+                list.add(Pair.of(bannerPattern, byId(j)));
             }
         }
         return list;
