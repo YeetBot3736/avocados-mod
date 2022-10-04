@@ -1,11 +1,6 @@
 package potato.avocados.block;
 
-import java.util.List;
-import java.util.Optional;
-
 import net.minecraft.block.*;
-import potato.avocados.entity.bed.BedEntity;
-import potato.avocados.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.BedPart;
 import net.minecraft.block.piston.PistonBehavior;
@@ -28,21 +23,17 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.CollisionView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.WorldEvents;
+import net.minecraft.world.*;
 import net.minecraft.world.explosion.Explosion;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
+import potato.avocados.entity.bed.BedEntity;
+
+import java.util.List;
+import java.util.Optional;
 
 public class BedBlk extends BedBlock {
     public static final EnumProperty<BedPart> PART = Properties.BED_PART;
@@ -97,7 +88,7 @@ public class BedBlk extends BedBlock {
             if (reason != null) {
                 player.sendMessage(reason.getMessage(), true);
             }
-            Avocados.LOGGER.info("Sleep Failed because " + (reason != null?reason.getMessage():"null"));
+            //Avocados.LOGGER.info("Sleep Failed because " + (reason != null?reason.getMessage():"null"));
         });
         return ActionResult.SUCCESS;
 

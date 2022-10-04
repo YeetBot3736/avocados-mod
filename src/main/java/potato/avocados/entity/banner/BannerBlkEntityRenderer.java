@@ -51,19 +51,19 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
     }
 
     @Override
-    public void render(BannerBlkEntity bannerBlockEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
+    public void render(BannerBlkEntity bannerBlkEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
         long l;
         float h;
-        List<Pair<BannerPattern, DyeColor>> list = bannerBlockEntity.getPatterns();
-        boolean bl = bannerBlockEntity.getWorld() == null;
+        List<Pair<BannerPattern, DyeColor>> list = bannerBlkEntity.getPatterns();
+        boolean bl = bannerBlkEntity.getWorld() == null;
         matrixStack.push();
         if (bl) {
             l = 0L;
             matrixStack.translate(0.5, 0.5, 0.5);
             this.pillar.visible = true;
         } else {
-            l = bannerBlockEntity.getWorld().getTime();
-            BlockState blockState = bannerBlockEntity.getCachedState();
+            l = bannerBlkEntity.getWorld().getTime();
+            BlockState blockState = bannerBlkEntity.getCachedState();
             if (blockState.getBlock() instanceof BannerBlk) {
                 matrixStack.translate(0.5, 0.5, 0.5);
                 h = (float)(-blockState.get(BannerBlk.ROTATION) * 360) / 16.0f;
@@ -82,7 +82,7 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
         VertexConsumer vertexConsumer = ModelLoader.BANNER_BASE.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntitySolid);
         this.pillar.render(matrixStack, vertexConsumer, i, j);
         this.crossbar.render(matrixStack, vertexConsumer, i, j);
-        BlockPos blockPos = bannerBlockEntity.getPos();
+        BlockPos blockPos = bannerBlkEntity.getPos();
         float k = ((float)Math.floorMod(blockPos.getX() * 7L + blockPos.getY() * 9L + blockPos.getZ() * 13L + l, 100L) + f) / 100.0f;
         this.banner.pitch = (-0.0125f + 0.01f * MathHelper.cos((float)Math.PI * 2 * k)) * (float)Math.PI;
         this.banner.pivotY = -32.0f;
@@ -96,8 +96,7 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
 
     public static void renderCanvas(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, ModelPart canvas, SpriteIdentifier baseSprite, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns, boolean glint) {
         canvas.render(matrices, baseSprite.getVertexConsumer(vertexConsumers, RenderLayer::getEntitySolid, glint), light, overlay);
-        for (int i = 0; i < 17 && i < patterns.size(); ++i) {
-            Pair<BannerPattern, DyeColor> pair = patterns.get(i);
+        for (Pair<BannerPattern, DyeColor> pair : patterns) {
             float[] fs = pair.getSecond().getColorComponents();
             BannerPattern bannerPattern = pair.getFirst();
             SpriteIdentifier spriteIdentifier = isBanner ? TexturedRenderLayers.getBannerPatternTextureId(bannerPattern) : TexturedRenderLayers.getShieldPatternTextureId(bannerPattern);

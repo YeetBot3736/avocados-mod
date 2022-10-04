@@ -100,23 +100,23 @@ public class Avocados implements ModInitializer {
 	public static final Block TEAL_BED = createBedBlock(TEAL_COLOR);
 	public static final Block TEAL_CANDLE = new CandleBlock(FabricBlockSettings.of(Material.DECORATION).strength(0.1f, 0.1f).sounds(BlockSoundGroup.CANDLE).luminance(CandleBlock.STATE_TO_LUMINANCE));
 	public static final Block TEAL_CANDLE_CAKE = new CakeCandle(TEAL_CANDLE, FabricBlockSettings.of(Material.DECORATION).strength(1.0f, 1.0f).sounds(BlockSoundGroup.CANDLE).luminance(lum(3)));
-	public static final Block TEAL_BANNER = new BannerBlk(TEAL_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOD));
-	public static final Block TEAL_WALL_BANNER = new WallBannerBlk(TEAL_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOD));
+	public static final Block TEAL_BANNER = new BannerBlk(TEAL_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOD).nonOpaque().noCollision());
+	public static final Block TEAL_WALL_BANNER = new WallBannerBlk(TEAL_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOD).nonOpaque().noCollision());
 	public static final Item FUCHSIA_DYE = new DyeItem(FUCHSIA_COLOR, new Item.Settings().group(ItemGroup.MISC));
 	public static final Block FUCHSIA_TERRACOTTA = new Block(FabricBlockSettings.of(Material.STONE).strength(12.5f, 42.0f).sounds(BlockSoundGroup.STONE));
 	public static final Block FUCHSIA_WOOL = new Block(FabricBlockSettings.copyOf(Blocks.GREEN_WOOL));
     public static final Block FUCHSIA_GLAZED_TERRACOTTA = new GlazedTerracottaBlock(FabricBlockSettings.of(Material.STONE).strength(14.0f, 14.0f).sounds(BlockSoundGroup.STONE));
 	public static final Block FUCHSIA_CARPET = new CarpetBlock(FabricBlockSettings.of(Material.CARPET).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOL));
-	public static final Block FUCHSIA_STAINED_GLASS = new StainedGlassBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f, 3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
-	public static final Block FUCHSIA_STAINED_GLASS_PANE = new StainedGlassPaneBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f, 3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque());
+	public static final Block FUCHSIA_STAINED_GLASS = new StainedGlassBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f, 3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque().noCollision());
+	public static final Block FUCHSIA_STAINED_GLASS_PANE = new StainedGlassPaneBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.GLASS).strength(3.0f, 3.0f).sounds(BlockSoundGroup.GLASS).nonOpaque().noCollision());
 	public static final Block FUCHSIA_SHULKER_BOX = createShulkerBoxBlock(FUCHSIA_COLOR, FabricBlockSettings.of(Material.SHULKER_BOX).strength(20.0f, 20.0f).sounds(BlockSoundGroup.STONE));
 	public static final Block FUCHSIA_CONCRETE = new Block(FabricBlockSettings.of(Material.STONE).strength(18.0f, 18.0f).sounds(BlockSoundGroup.STONE));
 	public static final Block FUCHSIA_CONCRETE_POWDER = new ConcretePowderBlock(FUCHSIA_CONCRETE, FabricBlockSettings.copyOf(Blocks.BLACK_CONCRETE_POWDER));
 	public static final Block FUCHSIA_BED = createBedBlock(FUCHSIA_COLOR);
 	public static final Block FUCHSIA_CANDLE = new CandleBlock(FabricBlockSettings.of(Material.DECORATION).strength(1.0f, 1.0f).sounds(BlockSoundGroup.CANDLE).luminance(CandleBlock.STATE_TO_LUMINANCE));
 	public static final Block FUCHSIA_CANDLE_CAKE = new CakeCandle(FUCHSIA_CANDLE, FabricBlockSettings.of(Material.DECORATION).strength(1.0f, 1.0f).sounds(BlockSoundGroup.CANDLE).luminance(lum(3)));
-	public static final Block FUCHSIA_BANNER = new BannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f, 10.0f).sounds(BlockSoundGroup.WOOD));
-	public static final Block FUCHSIA_WALL_BANNER = new WallBannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f, 10.0f).sounds(BlockSoundGroup.WOOD));
+	public static final Block FUCHSIA_BANNER = new BannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f, 10.0f).sounds(BlockSoundGroup.WOOD).nonOpaque());
+	public static final Block FUCHSIA_WALL_BANNER = new WallBannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(10.0f, 10.0f).sounds(BlockSoundGroup.WOOD).nonOpaque());
 	public static final List<SpriteIdentifier> HALLO = Stream.of("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black", "teal", "fuchsia").map(string -> new SpriteIdentifier(SHULKER_BOXES_ATLAS_TEXTURE, new Identifier("entity/shulker/shulker_" + string))).collect(ImmutableList.toImmutableList());
 	public static final EntityModelLayer SH = new EntityModelLayer(new Identifier("avocados", "shulker"), "main");
 	public static BlockEntityType<ShulkerBlockEntity> SHULKER_E;
@@ -138,7 +138,7 @@ public class Avocados implements ModInitializer {
 	public void regBannerBlock(Block banner, Block wallbanner, String BlockName, String WallBannerBlockName){
 		Registry.register(Registry.BLOCK, new Identifier("avocados", BlockName), banner);
 		Registry.register(Registry.BLOCK, new Identifier("avocados", WallBannerBlockName), wallbanner);
-		Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BannerItem(banner, wallbanner, new Item.Settings().group(ItemGroup.DECORATIONS).maxCount(16)));
+		Registry.register(Registry.ITEM, new Identifier("avocados", BlockName), new BannerItm(banner, wallbanner, new Item.Settings().group(ItemGroup.DECORATIONS).maxCount(16)));
 	}
 
 	private static ShulkerBlock createShulkerBoxBlock(DyeColor color, AbstractBlock.Settings settings) {
@@ -268,6 +268,3 @@ public class Avocados implements ModInitializer {
 		FlammableBlockRegistry.getDefaultInstance().add(FUCHSIA_CARPET,20,60);
 	}
 }
-
-
-//Thanks to mycf#6231, JoeMama#7129, Yeyito#1834, KaloyanKYS#5185 and Velimoss#0330, together with the whole of Suited Llama's Community and Fabriccord for helping with this mod :D

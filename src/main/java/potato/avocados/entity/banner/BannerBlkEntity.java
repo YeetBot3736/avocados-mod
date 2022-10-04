@@ -4,26 +4,26 @@ import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.AbstractBannerBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BannerBlockEntity;
 import net.minecraft.block.entity.BannerPattern;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Nameable;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
+import potato.avocados.Avocados;
 import potato.avocados.block.BannerBlk;
-import potato.avocados.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
-public class BannerBlkEntity extends BannerBlockEntity {
+public class BannerBlkEntity extends BlockEntity implements Nameable {
     public static final String PATTERNS_KEY = "Patterns";
     public static final String PATTERN_KEY = "Pattern";
     public static final String COLOR_KEY = "Color";
@@ -34,20 +34,17 @@ public class BannerBlkEntity extends BannerBlockEntity {
     private NbtList patternListNbt;
     @Nullable
     private List<Pair<BannerPattern, DyeColor>> patterns;
-    private static DyeColor[] dye =  Arrays.stream(DyeColor.values()).sorted(Comparator.comparingInt(DyeColor::getId)).toArray(DyeColor[]::new);
-    static{
-        dye = Arrays.copyOf(dye, dye.length + 2);
-        dye[dye.length - 2] = Avocados.TEAL_COLOR;
-        dye[dye.length - 1] = Avocados.FUCHSIA_COLOR;
-    }
+
     public BannerBlkEntity(BlockPos pos, BlockState state) {
-        super(pos, state);
-        this.baseColor = ((AbstractBannerBlock) state.getBlock()).getColor();
+        super(Avocados.BANNER_E, pos, state);
+        this.baseColor = ((AbstractBannerBlock)state.getBlock()).getColor();
     }
-    public static DyeColor byId(int id){
-        if(id < 0 || id > dye.length) return DyeColor.WHITE;
-        return dye[id];
+
+    public BannerBlkEntity(BlockPos pos, BlockState state, DyeColor baseColor) {
+        this(pos, state);
+        this.baseColor = baseColor;
     }
+
     @Nullable
     public static NbtList getPatternListNbt(ItemStack stack) {
         NbtList nbtList = null;
@@ -58,30 +55,76 @@ public class BannerBlkEntity extends BannerBlockEntity {
         return nbtList;
     }
 
-    public void readFrom(ItemStack stack, DyeColor baseColor) {
-        this.baseColor = baseColor;
-        this.readFrom(stack);
-    }
+//    public void readFrom(ItemStack stack, DyeColor baseColor) {
+//        this.baseColor = baseColor;
+//        this.readFrom(stack);
+//    }
 
     public void readFrom(ItemStack stack) {
-        this.patternListNbt = getPatternListNbt(stack);
+        this.patternListNbt = BannerBlkEntity.getPatternListNbt(stack);
         this.patterns = null;
         this.customName = stack.hasCustomName() ? stack.getName() : null;
     }
 
-    public void setCustomName(Text customName) {
+    @Override
+    public Text getName() {
+        if (this.customName != null) {
+            return this.customName;
+        }
+        return new TranslatableText("block.avocados.banner");
+    }
+
+    @Override
+    @Nullable
+    public Text getCustomName() {
+        return this.customName;
+    }
+
+    public void setCustomName(@Nullable Text    customName) {
         this.customName = customName;
     }
 
+    @Override
+    protected void writeNbt(NbtCompound nbt) {
+        super.writeNbt(nbt);
+        if (this.patternListNbt != null) {
+            nbt.put(PATTERNS_KEY, this.patternListNbt);
+        }
+        if (this.customName != null) {
+            nbt.putString("CustomName", Text.Serializer.toJson(this.customName));
+        }
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt) {
+        super.readNbt(nbt);
+        if (nbt.contains("CustomName", 8)) {
+            this.customName = Text.Serializer.fromJson(nbt.getString("CustomName"));
+        }
+        this.patternListNbt = nbt.getList(PATTERNS_KEY, 10);
+        this.patterns = null;
+    }
+
+    public BlockEntityUpdateS2CPacket toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
+    }
 
     @Override
     public NbtCompound toInitialChunkDataNbt() {
         return this.createNbt();
     }
 
+//    public static int getPatternCount(ItemStack stack) {
+//        NbtCompound nbtCompound = BlockItem.getBlockEntityNbt(stack);
+//        if (nbtCompound != null && nbtCompound.contains(PATTERNS_KEY)) {
+//            return nbtCompound.getList(PATTERNS_KEY, 10).size();
+//        }
+//        return 0;
+//    }
+
     public List<Pair<BannerPattern, DyeColor>> getPatterns() {
         if (this.patterns == null) {
-            this.patterns = getPatternsFromNbt(this.baseColor, this.patternListNbt);
+            this.patterns = BannerBlkEntity.getPatternsFromNbt(this.baseColor, this.patternListNbt);
         }
         return this.patterns;
     }
@@ -95,7 +138,7 @@ public class BannerBlkEntity extends BannerBlockEntity {
                 BannerPattern bannerPattern = BannerPattern.byId(nbtCompound.getString(PATTERN_KEY));
                 if (bannerPattern == null) continue;
                 int j = nbtCompound.getInt(COLOR_KEY);
-                list.add(Pair.of(bannerPattern, byId(j)));
+                list.add(Pair.of(bannerPattern, DyeColor.byId(j)));
             }
         }
         return list;
@@ -114,11 +157,4 @@ public class BannerBlkEntity extends BannerBlockEntity {
         return itemStack;
     }
 
-    public DyeColor getColorForState() {
-        return this.baseColor;
-    }
-
-    public BlockEntityUpdateS2CPacket toUpdatePacket() {
-        return BlockEntityUpdateS2CPacket.create(this);
-    }
 }
