@@ -5,4 +5,6 @@ For the version that was just released - go [here](https://www.curseforge.com/mi
 
 
 UPDATE:
-Version 1.1.2 was just released on CurseForge! Thank you all for supporting this mod! I will be working on a new version after I port this mod to 1.19.2 as well. Thanks!!!
+Version 1.1.2 was just released on CurseForge! Thank you all for supporting this mod!
+
+This mod has been successfully ported to 1.19 as well! Check it out!
