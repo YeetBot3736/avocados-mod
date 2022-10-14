@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+	"recipes": [
+	  "avocados:platinum_trapdoor"
+	]
+  },
+  "criteria": {
+	"correctItem": {
+	  "trigger": "minecraft:inventory_changed",
+	  "conditions": {
+		"items": [
+		  {
+			"tag": "avocados:plat_tools"
+		  }
+		]
+	  }
+	},
+	"has_the_recipe": {
+	  "trigger": "minecraft:recipe_unlocked",
+	  "conditions": {
+		"recipe": "avocados:platinum_trapdoor"
+	  }
+	}
+  },
+  "requirements": [
+	[
+	  "correctItem",
+	  "has_the_recipe"
+	]
+  ]
+}
+

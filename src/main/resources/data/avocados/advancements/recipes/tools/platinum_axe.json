@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+	"recipes": [
+	  "avocados:platinum_axe"
+	]
+  },
+  "criteria": {
+	"has_platinum": {
+	  "trigger": "minecraft:inventory_changed",
+	  "conditions": {
+		"items": [
+		  {
+			"tag": "avocados:plat_tools"
+		  }
+		]
+	  }
+	},
+	"has_the_recipe": {
+	  "trigger": "minecraft:recipe_unlocked",
+	  "conditions": {
+		"recipe": "avocados:platinum_axe"
+	  }
+	}
+  },
+  "requirements": [
+	[
+	  "has_platinum",
+	  "has_the_recipe"
+	]
+  ]
+}

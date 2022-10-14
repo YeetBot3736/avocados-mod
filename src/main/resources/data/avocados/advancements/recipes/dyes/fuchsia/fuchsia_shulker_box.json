@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+	"recipes": [
+	  "avocados:fuchsia_shulker_box"
+	]
+  },
+  "criteria": {
+	"has_platinum": {
+	  "trigger": "minecraft:inventory_changed",
+	  "conditions": {
+		"items": [
+		  {
+			"tag": "avocados:tag_shulker_box"
+		  }
+		]
+	  }
+	},
+	"has_the_recipe": {
+	  "trigger": "minecraft:recipe_unlocked",
+	  "conditions": {
+		"recipe": "avocados:fuchsia_shulker_box"
+	  }
+	}
+  },
+  "requirements": [
+	[
+	  "has_platinum",
+	  "has_the_recipe"
+	]
+  ]
+}
