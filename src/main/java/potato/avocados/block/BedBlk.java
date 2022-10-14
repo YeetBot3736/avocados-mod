@@ -18,7 +18,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
@@ -80,7 +80,7 @@ public class BedBlk extends BedBlock {
         }
         if (state.get(OCCUPIED)) {
             if (!this.wakeVillager(world, pos)) {
-                player.sendMessage(new TranslatableText("block.minecraft.bed.occupied"), true);
+                player.sendMessage(Text.translatable("block.minecraft.bed.occupied"), true);
             }
             return ActionResult.SUCCESS;
         }
@@ -95,7 +95,7 @@ public class BedBlk extends BedBlock {
     }
 
     public static boolean isBedWorking(World world) {
-        return world.getDimension().isBedWorking();
+        return world.getDimension().bedWorks();
     }
     private boolean wakeVillager(World world, BlockPos pos) {
         List<VillagerEntity> list = world.getEntitiesByClass(VillagerEntity.class, new Box(pos), LivingEntity::isSleeping);

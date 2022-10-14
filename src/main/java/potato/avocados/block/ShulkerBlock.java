@@ -23,7 +23,6 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.stat.Stats;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
@@ -165,7 +164,7 @@ public class ShulkerBlock extends ShulkerBoxBlock implements BlockEntityProvider
         NbtCompound nbtCompound = BlockItem.getBlockEntityNbt(stack);
         if (nbtCompound != null) {
             if (nbtCompound.contains("LootTable", 8)) {
-                tooltip.add(new LiteralText("???????"));
+                tooltip.add(Text.literal("???????"));
             }
         }
     }

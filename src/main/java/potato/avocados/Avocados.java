@@ -27,13 +27,14 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.YOffset;
-import net.minecraft.world.gen.decorator.CountPlacementModifier;
-import net.minecraft.world.gen.decorator.HeightRangePlacementModifier;
-import net.minecraft.world.gen.decorator.SquarePlacementModifier;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
+import net.minecraft.world.gen.placementmodifier.HeightRangePlacementModifier;
+import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import potato.avocados.armor.BaseArmor;
@@ -52,6 +53,7 @@ import potato.avocados.redstone.DoorBlk;
 import potato.avocados.redstone.PlatTrapDoor;
 import potato.avocados.redstone.PressPlateBlk;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.ToIntFunction;
@@ -155,17 +157,26 @@ public class Avocados implements ModInitializer {
 	private static ToIntFunction<BlockState> lum(int litLevel) {
 		return state -> state.get(Properties.LIT) ? litLevel : 0;
 	}
-	private static final ConfiguredFeature<?, ?> ORE_PLATINUM = Feature.ORE
-			.configure(new OreFeatureConfig(
+	private static final ConfiguredFeature<?, ?	> ORE_PLATINUM = new ConfiguredFeature(Feature.ORE
+			,new OreFeatureConfig(
 					new BlockMatchRuleTest(Blocks.END_STONE),
 					PLAT_ORE.getDefaultState(), 12
 			));
-	private static final PlacedFeature ORE_PLATINUM_THE_END = ORE_PLATINUM.withPlacement(CountPlacementModifier.of(2), SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(80)));
-	private static final ConfiguredFeature<?, ?> NETHER_PLATI_ORE = Feature.ORE
-			.configure(new OreFeatureConfig(OreConfiguredFeatures.BASE_STONE_NETHER,
+	private static final PlacedFeature ORE_PLATINUM_THE_END = new PlacedFeature(
+		RegistryEntry.of(ORE_PLATINUM),Arrays.asList(
+			CountPlacementModifier.of(2),
+			SquarePlacementModifier.of(),
+			HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(80)))
+	);
+	private static final ConfiguredFeature<?, ?> NETHER_PLATI_ORE = new ConfiguredFeature(Feature.ORE
+			,new OreFeatureConfig(OreConfiguredFeatures.BASE_STONE_NETHER,
 					NETHER_PLAT_ORE.getDefaultState(), 7
 			));
-	private static final PlacedFeature NETHER_PLATINUM_ORE = NETHER_PLATI_ORE.withPlacement(CountPlacementModifier.of(5), SquarePlacementModifier.of(), HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(85)));
+	private static final PlacedFeature NETHER_PLATINUM_ORE = new PlacedFeature(RegistryEntry.of(NETHER_PLATI_ORE),
+			Arrays.asList(
+					CountPlacementModifier.of(5),
+					SquarePlacementModifier.of(),
+					HeightRangePlacementModifier.uniform(YOffset.getBottom(), YOffset.fixed(85))));
 
 	private static BedBlk createBedBlock(DyeColor color) {
 		return new BedBlk(color, AbstractBlock.Settings.of(Material.WOOL, state -> state.get(BedBlock.PART) == BedPart.FOOT ? color.getMapColor() : MapColor.WHITE_GRAY).sounds(BlockSoundGroup.WOOD).strength(0.2f).nonOpaque());

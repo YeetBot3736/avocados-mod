@@ -19,6 +19,8 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.RegistryKey;
 import potato.avocados.AvocadosClient;
 import potato.avocados.block.BannerBlk;
 import potato.avocados.block.WallBannerBlk;
@@ -54,7 +56,7 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
     public void render(BannerBlkEntity bannerBlkEntity, float f, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, int j) {
         long l;
         float h;
-        List<Pair<BannerPattern, DyeColor>> list = bannerBlkEntity.getPatterns();
+        List<Pair<RegistryEntry<BannerPattern>, DyeColor>> list = bannerBlkEntity.getPatterns();
         boolean bl = bannerBlkEntity.getWorld() == null;
         matrixStack.push();
         if (bl) {
@@ -90,17 +92,22 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
         matrixStack.pop();
         matrixStack.pop();
     }
-    public static void renderCanvas(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, ModelPart canvas, SpriteIdentifier baseSprite, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns) {
+    public static void renderCanvas(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, ModelPart canvas, SpriteIdentifier baseSprite, boolean isBanner, List<Pair<RegistryEntry<BannerPattern>, DyeColor>> patterns) {
         renderCanvas(matrices, vertexConsumers, light, overlay, canvas, baseSprite, isBanner, patterns, false);
     }
 
-    public static void renderCanvas(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, ModelPart canvas, SpriteIdentifier baseSprite, boolean isBanner, List<Pair<BannerPattern, DyeColor>> patterns, boolean glint) {
+    public static void renderCanvas(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, ModelPart canvas, SpriteIdentifier baseSprite, boolean isBanner, List<Pair<RegistryEntry<BannerPattern>, DyeColor>> patterns, boolean glint) {
         canvas.render(matrices, baseSprite.getVertexConsumer(vertexConsumers, RenderLayer::getEntitySolid, glint), light, overlay);
-        for (Pair<BannerPattern, DyeColor> pair : patterns) {
+        for (Pair<RegistryEntry<BannerPattern>, DyeColor> pair : patterns) {
             float[] fs = pair.getSecond().getColorComponents();
-            BannerPattern bannerPattern = pair.getFirst();
-            SpriteIdentifier spriteIdentifier = isBanner ? TexturedRenderLayers.getBannerPatternTextureId(bannerPattern) : TexturedRenderLayers.getShieldPatternTextureId(bannerPattern);
-            canvas.render(matrices, spriteIdentifier.getVertexConsumer(vertexConsumers, RenderLayer::getEntityNoOutline), light, overlay, fs[0], fs[1], fs[2], 1.0f);
+            ((RegistryEntry)pair.getFirst()).getKey().map((key) -> {
+                RegistryKey<BannerPattern> bp = (RegistryKey<BannerPattern>) key;
+                if(isBanner){
+                    return TexturedRenderLayers.getBannerPatternTextureId(bp);
+                }else{
+                    return TexturedRenderLayers.getShieldPatternTextureId(bp);
+                }
+            }).ifPresent((sprite) -> canvas.render(matrices, baseSprite.getVertexConsumer(vertexConsumers, RenderLayer::getEntityNoOutline), light, overlay, fs[0], fs[1], fs[2], 1.0F));
         }
     }
 }

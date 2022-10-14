@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_left_open",
+  "textures": {
+    "bottom": "avocados:block/platinum_door_bottom",
+    "top": "avocados:block/platinum_door_top"
+  }
+}
