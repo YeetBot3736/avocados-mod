@@ -6,8 +6,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.EntityType;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
+import net.minecraft.loot.condition.TableBonusLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
-import net.minecraft.loot.function.ApplyBonusLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.util.Identifier;
 
@@ -15,15 +15,14 @@ import static potato.avocados.Avocados.AVOCADO;
 
 public class CustomLootTable {
     public static final Identifier SHEEP = EntityType.SHEEP.getLootTableId();
-    public static final Identifier SPRUCE = Blocks.SPRUCE_SAPLING.getLootTableId();
+    public static final Identifier SPRUCE = Blocks.SPRUCE_LEAVES.getLootTableId();
     public static void register(){
         LootTableLoadingCallback.EVENT.register(((resourceManager, manager, id, supplier, setter) -> {
                     if(SPRUCE.equals(id)){
                         FabricLootPoolBuilder poolBuilder = FabricLootPoolBuilder.builder()
                                 .rolls(ConstantLootNumberProvider.create(1))
                                 .with(ItemEntry.builder(AVOCADO))
-                                .withCondition(RandomChanceLootCondition.builder(0.05f).build())
-                                .withFunction(ApplyBonusLootFunction.oreDrops(Enchantments.FORTUNE).build());
+                                .withCondition(TableBonusLootCondition.builder(Enchantments.FORTUNE,0.04f,0.1f,0.2f,0.35f).build());
                         supplier.pool(poolBuilder);
                     }
                 })
