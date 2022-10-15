@@ -107,7 +107,7 @@ public class BannerBlkEntityRenderer implements BlockEntityRenderer<BannerBlkEnt
                 }else{
                     return TexturedRenderLayers.getShieldPatternTextureId(bp);
                 }
-            }).ifPresent((sprite) -> canvas.render(matrices, baseSprite.getVertexConsumer(vertexConsumers, RenderLayer::getEntityNoOutline), light, overlay, fs[0], fs[1], fs[2], 1.0F));
+            }).ifPresent((sprite) -> canvas.render(matrices, ((SpriteIdentifier)sprite).getVertexConsumer(vertexConsumers, RenderLayer::getEntityNoOutline), light, overlay, fs[0], fs[1], fs[2], 1.0F));
         }
     }
 }
