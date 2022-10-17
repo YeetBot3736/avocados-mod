@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+	"cross": "avocados:block/fuchsia_flower"
+  }
+}

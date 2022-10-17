@@ -1,9 +1,12 @@
 {
-  "type": "minecraft:smelting",
-  "ingredient": {
-	"item": "minecraft:purple_dye"
-  },
-  "result": "avocados:fuchsia_dye",
-  "experience": 0.1,
-  "cookingtime": 200
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "avocados:fuchsia_flower"
+    }
+  ],
+  "result": {
+    "item": "avocados:fuchsia_dye",
+    "count": 1
+  }
 }

@@ -23,6 +23,7 @@ public class AvocadosClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(Avocados.FUCHSIA_STAINED_GLASS, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(Avocados.TEAL_STAINED_GLASS_PANE, RenderLayer.getTranslucent());
         BlockRenderLayerMap.INSTANCE.putBlock(Avocados.FUCHSIA_STAINED_GLASS_PANE, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(Avocados.FUCHSIA_FLOWER, RenderLayer.getCutout());
         BlockEntityRendererRegistry.register(Avocados.SHULKER_E, ShulkerBlockEntityRenderer::new);
         EntityModelLayerRegistry.registerModelLayer(ENTITY_MODEL_LAYER, ShulkerBlockModel::getTexturedModelData);
         BlockEntityRendererRegistry.register(Avocados.BED_E, BedEntityRenderer::new);
