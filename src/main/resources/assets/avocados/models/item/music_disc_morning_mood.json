@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+	"layer0": "avocados:item/music_disc_morning_mood"
+  }
+}

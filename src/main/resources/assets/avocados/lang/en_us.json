@@ -135,5 +135,7 @@
     "block.minecraft.banner.straight_cross.teal":"Teal Cross",
     "block.minecraft.banner.globe.teal":"Teal Globe",
     "block.minecraft.banner.piglin.teal":"Teal Snout",
-    "block.avocados.fuchsia_flower": "Fuchsia Flower"
+    "block.avocados.fuchsia_flower": "Fuchsia Flower",
+    "item.avocados.music_disc_morning_mood": "Music Disc",
+    "item.avocados.music_disc_morning_mood.desc": "Edvard Grieg - Morning Mood"
 }

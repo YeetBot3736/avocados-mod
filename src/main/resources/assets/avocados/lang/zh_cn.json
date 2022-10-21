@@ -135,5 +135,7 @@
     "block.minecraft.banner.straight_cross.teal":"蓝绿色正十字",
     "block.minecraft.banner.globe.teal":"蓝绿色地球",
     "block.minecraft.banner.piglin.teal":"蓝绿色猪鼻",
-    "block.avocados.fuchsia_flower": "倒挂金钟"
+    "block.avocados.fuchsia_flower": "倒挂金钟",
+    "item.avocados.music_disc_morning_mood": "音乐唱片",
+    "item.avocados.music_disc_morning_mood.desc": "爱德华·格里格 - 晨歌"
 }

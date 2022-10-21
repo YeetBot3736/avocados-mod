@@ -21,6 +21,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.Settings;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.state.property.Properties;
 import net.minecraft.structure.rule.BlockMatchRuleTest;
 import net.minecraft.util.ActionResult;
@@ -66,6 +67,7 @@ public class Avocados implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("avocados");
 	public static final Identifier TEAL_SHEEP = new Identifier("entities/sheep/teal");
 	public static final Identifier FUCHSIA_SHEEP = new Identifier("entities/sheep/fuchsia");
+	public static final SoundEvent MORNING_MOOD = new SoundEvent(new Identifier("avocados","morning_mood"));
 	public static final Item AVOCADO = new Item(new Settings().group(ItemGroup.FOOD).food(AvocadoComponents.AVOCADO));
 	public static final Item CHEESE = new Item(new Settings().group(ItemGroup.FOOD).food(AvocadoComponents.CHEESE));
 	public static final Item CHEESECAKE = new Item(new Settings().group(ItemGroup.FOOD).food(AvocadoComponents.CHEESECAKE));
@@ -121,6 +123,7 @@ public class Avocados implements ModInitializer {
 	public static final Block FUCHSIA_BANNER = new BannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1f, 1.0f).sounds(BlockSoundGroup.WOOD).nonOpaque().noCollision());
 	public static final Block FUCHSIA_WALL_BANNER = new WallBannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOD).nonOpaque().noCollision());
 	public static final Block FUCHSIA_FLOWER = new FlowerBlock(StatusEffects.DARKNESS,100,FabricBlockSettings.copy(Blocks.DANDELION));
+	public static final Item MORNING_MOOD_DISC = new MusicDiscItem(10, MORNING_MOOD, new Item.Settings().group(ItemGroup.MISC).maxCount(1), 1);
 	public static final List<SpriteIdentifier> HALLO = Stream.of("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black", "teal", "fuchsia").map(string -> new SpriteIdentifier(SHULKER_BOXES_ATLAS_TEXTURE, new Identifier("entity/shulker/shulker_" + string))).collect(ImmutableList.toImmutableList());
 	public static final EntityModelLayer SH = new EntityModelLayer(new Identifier("avocados", "shulker"), "main");
 	public static BlockEntityType<ShulkerBlockEntity> SHULKER_E;
@@ -210,6 +213,7 @@ public class Avocados implements ModInitializer {
 		Registry.register(BuiltinRegistries.PLACED_FEATURE, new Identifier("avocados", "nether_platinum_ore"), NETHER_PLATINUM_ORE);
 		BiomeModifications.addFeature(BiomeSelectors.foundInTheNether(), GenerationStep.Feature.UNDERGROUND_ORES, RegistryKey.of(Registry.PLACED_FEATURE_KEY, new Identifier("avocados", "nether_platinum_ore")));
 		BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Feature.VEGETAL_DECORATION, FUCHSIA_PLACED.getKey().get());
+		Registry.register(Registry.SOUND_EVENT, new Identifier("avocados", "morning_mood"), MORNING_MOOD);
 		regItem("avocado",AVOCADO);
 		regItem("cheese",CHEESE);
 		regItem("cheesecake",CHEESECAKE);
@@ -240,6 +244,7 @@ public class Avocados implements ModInitializer {
 		regItem("platinum_horse_armor", PLAT_HORSE_ARMOR);
 		regBlock("platinum_pressure_plate",PLAT_PRESSURE_PLATE, ItemGroup.REDSTONE);
 		regBlock("nether_platinum_ore", NETHER_PLAT_ORE, ItemGroup.BUILDING_BLOCKS);
+		regBlock("platinum_pressure_plate",PLAT_PRESSURE_PLATE, ItemGroup.REDSTONE);
 		regItem("teal_dye",TEAL_DYE);
 		regBlock("teal_terracotta", TEAL_TERRACOTTA, ItemGroup.BUILDING_BLOCKS);
 		regBlock("teal_wool", TEAL_WOOL, ItemGroup.BUILDING_BLOCKS);
@@ -266,6 +271,7 @@ public class Avocados implements ModInitializer {
 		regBlock("fuchsia_bed", FUCHSIA_BED, ItemGroup.DECORATIONS);
 		regBlock("fuchsia_candle", FUCHSIA_CANDLE, ItemGroup.DECORATIONS);
 		regBlock("fuchsia_flower",FUCHSIA_FLOWER,ItemGroup.DECORATIONS);
+		regItem("music_disc_morning_mood", MORNING_MOOD_DISC);
 		regBannerBlock(FUCHSIA_BANNER, FUCHSIA_WALL_BANNER, "fuchsia_banner","fuchsia_wall_banner");
 		Registry.register(Registry.BLOCK, new Identifier("avocados", "teal_candle_cake"), TEAL_CANDLE_CAKE);
 		Registry.register(Registry.BLOCK, new Identifier("avocados", "fuchsia_candle_cake"), FUCHSIA_CANDLE_CAKE);

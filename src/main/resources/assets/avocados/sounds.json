@@ -1,0 +1,10 @@
+{
+  "morning_mood": {
+	"sounds": [
+	  {
+		"name": "avocados:morning_mood",
+		"stream": true
+	  }
+	]
+  }
+}
