@@ -123,7 +123,7 @@ public class Avocados implements ModInitializer {
 	public static final Block FUCHSIA_BANNER = new BannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1f, 1.0f).sounds(BlockSoundGroup.WOOD).nonOpaque().noCollision());
 	public static final Block FUCHSIA_WALL_BANNER = new WallBannerBlk(FUCHSIA_COLOR, FabricBlockSettings.of(Material.WOOD).strength(1.0f, 1.0f).sounds(BlockSoundGroup.WOOD).nonOpaque().noCollision());
 	public static final Block FUCHSIA_FLOWER = new FlowerBlock(StatusEffects.DARKNESS,100,FabricBlockSettings.copy(Blocks.DANDELION));
-	public static final Item MORNING_MOOD_DISC = new MusicDiscItem(10, MORNING_MOOD, new Item.Settings().group(ItemGroup.MISC).maxCount(1), 1);
+	public static final Item MORNING_MOOD_DISC = new MusicDiscItem(10, MORNING_MOOD, new Item.Settings().group(ItemGroup.MISC).maxCount(1), 212);
 	public static final List<SpriteIdentifier> HALLO = Stream.of("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black", "teal", "fuchsia").map(string -> new SpriteIdentifier(SHULKER_BOXES_ATLAS_TEXTURE, new Identifier("entity/shulker/shulker_" + string))).collect(ImmutableList.toImmutableList());
 	public static final EntityModelLayer SH = new EntityModelLayer(new Identifier("avocados", "shulker"), "main");
 	public static BlockEntityType<ShulkerBlockEntity> SHULKER_E;
@@ -238,11 +238,10 @@ public class Avocados implements ModInitializer {
 		regItem("platinum_shovel", new PlatShovel(new ToolMaterialPlatinum()));
 		regItem("platinum_sword", new PlatSword(new ToolMaterialPlatinum()));
 		regItem("platinum_hoe", new PlatHoe(new ToolMaterialPlatinum()));
-		regBlock("platinum_pressure_plate",PLAT_PRESSURE_PLATE,ItemGroup.REDSTONE);
 		regBlock("platinum_door",PLAT_DOOR, ItemGroup.REDSTONE);
 		regBlock("platinum_button", PLAT_BUTTON, ItemGroup.REDSTONE);
 		regItem("platinum_horse_armor", PLAT_HORSE_ARMOR);
-		regBlock("platinum_pressure_plate",PLAT_PRESSURE_PLATE, ItemGroup.REDSTONE);
+		regBlock("platinum_trapdoor", PLAT_TRAPDOOR, ItemGroup.REDSTONE);
 		regBlock("nether_platinum_ore", NETHER_PLAT_ORE, ItemGroup.BUILDING_BLOCKS);
 		regBlock("platinum_pressure_plate",PLAT_PRESSURE_PLATE, ItemGroup.REDSTONE);
 		regItem("teal_dye",TEAL_DYE);
